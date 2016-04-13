@@ -22,6 +22,11 @@ class Grid:
 	def calcCapture():
 		pass
 
+class Piece:
+
+	def __init__(self, color):
+		self.color = color
+
 class Player:
 	
 	def __init__(self, color, name):
