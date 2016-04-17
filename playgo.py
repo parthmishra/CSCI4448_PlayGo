@@ -7,6 +7,7 @@ BLACK 		= (  0,   0,   0)
 DRKGRAY		= (100, 100, 100)
 LTGRAY		= (175, 175, 175)
 TAN			= (224,	176,  54)
+GREEN		= (  0, 255,   0)
 
 #Game Options
 FPS = 20
@@ -84,23 +85,74 @@ def showStartScreen():
 	mode2PRect = pygame.draw.rect(DISPLAY, WHITE, mode2PButtonRect.inflate(20, 5), 0)
 	
 	modeAIButtonObj = pygame.font.SysFont(STARTSCREENFONT, 25)
-	modeAIButton = modeAIButtonObj.render(" vs. AI ", True, BLACK)
+	modeAIButton = modeAIButtonObj.render("  vs. AI  ", True, BLACK)
 	modeAIButtonRect = modeAIButton.get_rect()
 	modeAIButtonRect.center = (WINWIDTH * 0.5 + 75, WINHEIGHT * 0.49)
 	modeAIRect = pygame.draw.rect(DISPLAY, DRKGRAY, modeAIButtonRect.inflate(20, 5), 0)
 	
+	player1ButtonObj = pygame.font.SysFont(STARTSCREENFONT, 25)
+	player1Button = player1ButtonObj.render("  Player 1  ", True, BLACK)
+	player1ButtonRect = player1Button.get_rect()
+	player1ButtonRect.center = (WINWIDTH * 0.5 - 75, WINHEIGHT * 0.69)
+	player1Rect = pygame.draw.rect(DISPLAY, WHITE, player1ButtonRect.inflate(20, 5), 0)
 	
-	while True:
+	player2ButtonObj = pygame.font.SysFont(STARTSCREENFONT, 25)
+	player2Button = player2ButtonObj.render("      AI       ", True, BLACK)
+	player2ButtonRect = player2Button.get_rect()
+	player2ButtonRect.center = (WINWIDTH * 0.5 + 75, WINHEIGHT * 0.69)
+	player2Rect = pygame.draw.rect(DISPLAY, WHITE, player2ButtonRect.inflate(20, 5), 0)
+	
+	startButtonObj = pygame.font.SysFont(STARTSCREENFONT, 25)
+	startButton = startButtonObj.render("  START  ", True, BLACK)
+	startButtonRect = startButton.get_rect()
+	startButtonRect.center = (WINWIDTH * 0.5, WINHEIGHT * 0.9)
+	startRect = pygame.draw.rect(DISPLAY, GREEN, startButtonRect.inflate(20, 5), 0)
+	
+	DISPLAY.blit(mode2PButton, mode2PButtonRect)
+	DISPLAY.blit(modeAIButton, modeAIButtonRect)
+	DISPLAY.blit(player1Button, player1ButtonRect)
+	DISPLAY.blit(player2Button, player2ButtonRect)
+	DISPLAY.blit(startButton, startButtonRect)
+	
+	cont = True
+	grid = 0
+	
+	while cont:
+		mousePress = False
 		for event in pygame.event.get():
 			if event.type == MOUSEBUTTONUP:
-				pygame.quit()
-				sys.exit()
+				if event.button == 1:
+					mousex, mousey = event.pos
+					mousePress = True
+			elif event.type == KEYUP:
+				if event.key == K_ESCAPE:
+					pygame.quit()
+					sys.exit()
 		
+		
+		if mousePress: 
+			if gridSize9OptButtonRect.collidepoint(mousex, mousey):
+				gridSize9Rect = pygame.draw.rect(DISPLAY, LTGRAY, gridSize9Rect, 0)
+				gridSize11Rect = pygame.draw.rect(DISPLAY, WHITE, gridSize11Rect, 0)
+				gridSize19Rect = pygame.draw.rect(DISPLAY, WHITE, gridSize19Rect, 0)
+				grid = 9
+			if gridSize11OptButtonRect.collidepoint(mousex, mousey):
+				gridSize9Rect = pygame.draw.rect(DISPLAY, WHITE, gridSize9Rect, 0)
+				gridSize11Rect = pygame.draw.rect(DISPLAY, LTGRAY, gridSize11Rect, 0)
+				gridSize19Rect = pygame.draw.rect(DISPLAY, WHITE, gridSize19Rect, 0)
+				grid = 11
+			if gridSize19OptButtonRect.collidepoint(mousex, mousey):
+				gridSize9Rect = pygame.draw.rect(DISPLAY, WHITE, gridSize9Rect, 0)
+				gridSize11Rect = pygame.draw.rect(DISPLAY, WHITE, gridSize11Rect, 0)
+				gridSize19Rect = pygame.draw.rect(DISPLAY, LTGRAY, gridSize19Rect, 0)
+				grid = 19
+			elif startButtonRect.collidepoint(mousex, mousey):
+				cont = False
+			
 		DISPLAY.blit(gridSize9OptButton, gridSize9OptButtonRect)
 		DISPLAY.blit(gridSize11OptButton, gridSize11OptButtonRect)
 		DISPLAY.blit(gridSize19OptButton, gridSize19OptButtonRect)
-		DISPLAY.blit(mode2PButton, mode2PButtonRect)
-		DISPLAY.blit(modeAIButton, modeAIButtonRect)
+		
 		pygame.display.update()
 		
 		FPSCLOCK.tick(FPS)
