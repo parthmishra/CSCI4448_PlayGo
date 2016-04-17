@@ -156,6 +156,9 @@ def showStartScreen():
 		pygame.display.update()
 		
 		FPSCLOCK.tick(FPS)
+	
+	print grid
+	return grid
 
 class scoreBoard:
 
