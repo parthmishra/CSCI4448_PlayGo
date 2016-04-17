@@ -1,10 +1,11 @@
-#!/usr/bin/python
 import pygame, sys
 from pygame.locals import *
 
 #COLOR TABLE 	R    G    B
 WHITE		= (255,	255, 255)
 BLACK 		= (  0,   0,   0)
+DRKGRAY		= (100, 100, 100)
+LTGRAY		= (175, 175, 175)
 TAN			= (224,	176,  54)
 
 #Game Options
@@ -26,6 +27,7 @@ def showStartScreen():
 	mousex = 0
 	mousey = 0
 	
+	#Adding text labels to the screen
 	titleFontObj = pygame.font.SysFont(STARTSCREENFONT, 40)
 	titleFontObj.set_underline(True)
 	titleText = titleFontObj.render("Start Game", True, BLACK)
@@ -35,30 +37,70 @@ def showStartScreen():
 	gridSizeTextObj = pygame.font.SysFont(STARTSCREENFONT, 30)
 	gridSizeText = gridSizeTextObj.render("Grid Size", True, BLACK)
 	gridSizeTextRect = gridSizeText.get_rect()
-	gridSizeTextRect.center = (WINWIDTH * 0.5, WINHEIGHT * 0.22)
+	gridSizeTextRect.center = (WINWIDTH * 0.5, WINHEIGHT * 0.2)
 	
 	gameModeTextObj = pygame.font.SysFont(STARTSCREENFONT, 30)
 	gameModeText = gameModeTextObj.render("Game Mode", True, BLACK)
 	gameModeTextRect = gameModeText.get_rect()
-	gameModeTextRect.center = (WINWIDTH * 0.5, WINHEIGHT * 0.44)
+	gameModeTextRect.center = (WINWIDTH * 0.5, WINHEIGHT * 0.4)
 	
 	nameTextObj = pygame.font.SysFont(STARTSCREENFONT, 30)
 	nameText = nameTextObj.render("Name", True, BLACK)
 	nameTextRect = nameText.get_rect()
-	nameTextRect.center = (WINWIDTH * 0.5, WINHEIGHT * 0.66)
-	 
+	nameTextRect.center = (WINWIDTH * 0.5, WINHEIGHT * 0.6)
+	
+	
+	#Displaying non-changing parts of the screen
+	DISPLAY.fill(TAN)
+	DISPLAY.blit(titleText, titleTextRect)
+	DISPLAY.blit(gridSizeText, gridSizeTextRect)
+	DISPLAY.blit(gameModeText, gameModeTextRect)
+	DISPLAY.blit(nameText, nameTextRect)
+	
+	
+	#Adding options buttons
+	gridSize9OptButtonObj = pygame.font.SysFont(STARTSCREENFONT, 25)
+	gridSize9OptButton = gridSize9OptButtonObj.render(" 9 X 9 ", True, BLACK)
+	gridSize9OptButtonRect = gridSize9OptButton.get_rect()
+	gridSize9OptButtonRect.center = (WINWIDTH * 0.5 - 150, WINHEIGHT * 0.29)
+	gridSize9Rect = pygame.draw.rect(DISPLAY, WHITE, gridSize9OptButtonRect.inflate(20, 5), 0)
+	
+	gridSize11OptButtonObj = pygame.font.SysFont(STARTSCREENFONT, 25)
+	gridSize11OptButton = gridSize11OptButtonObj.render("11 X 11", True, BLACK)
+	gridSize11OptButtonRect = gridSize11OptButton.get_rect()
+	gridSize11OptButtonRect.center = (WINWIDTH * 0.5, WINHEIGHT * 0.29)
+	gridSize11Rect = pygame.draw.rect(DISPLAY, WHITE, gridSize11OptButtonRect.inflate(20, 5), 0)
+	
+	gridSize19OptButtonObj = pygame.font.SysFont(STARTSCREENFONT, 25)
+	gridSize19OptButton = gridSize19OptButtonObj.render("19 X 19", True, BLACK)
+	gridSize19OptButtonRect = gridSize19OptButton.get_rect()
+	gridSize19OptButtonRect.center = (WINWIDTH * 0.5 + 150, WINHEIGHT * 0.29)
+	gridSize19Rect = pygame.draw.rect(DISPLAY, WHITE, gridSize19OptButtonRect.inflate(20, 5), 0)
+	
+	mode2PButtonObj = pygame.font.SysFont(STARTSCREENFONT, 25)
+	mode2PButton = mode2PButtonObj.render("2 Player", True, BLACK)
+	mode2PButtonRect = mode2PButton.get_rect()
+	mode2PButtonRect.center = (WINWIDTH * 0.5 - 75, WINHEIGHT * 0.49)
+	mode2PRect = pygame.draw.rect(DISPLAY, WHITE, mode2PButtonRect.inflate(20, 5), 0)
+	
+	modeAIButtonObj = pygame.font.SysFont(STARTSCREENFONT, 25)
+	modeAIButton = modeAIButtonObj.render(" vs. AI ", True, BLACK)
+	modeAIButtonRect = modeAIButton.get_rect()
+	modeAIButtonRect.center = (WINWIDTH * 0.5 + 75, WINHEIGHT * 0.49)
+	modeAIRect = pygame.draw.rect(DISPLAY, DRKGRAY, modeAIButtonRect.inflate(20, 5), 0)
+	
+	
 	while True:
 		for event in pygame.event.get():
 			if event.type == MOUSEBUTTONUP:
 				pygame.quit()
 				sys.exit()
 		
-		DISPLAY.fill(TAN)
-		
-		DISPLAY.blit(titleText, titleTextRect)
-		DISPLAY.blit(gridSizeText, gridSizeTextRect)
-		DISPLAY.blit(gameModeText, gameModeTextRect)
-		DISPLAY.blit(nameText, nameTextRect)
+		DISPLAY.blit(gridSize9OptButton, gridSize9OptButtonRect)
+		DISPLAY.blit(gridSize11OptButton, gridSize11OptButtonRect)
+		DISPLAY.blit(gridSize19OptButton, gridSize19OptButtonRect)
+		DISPLAY.blit(mode2PButton, mode2PButtonRect)
+		DISPLAY.blit(modeAIButton, modeAIButtonRect)
 		pygame.display.update()
 		
 		FPSCLOCK.tick(FPS)
