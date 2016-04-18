@@ -97,7 +97,7 @@ def showStartScreen():
 	player1Rect = pygame.draw.rect(DISPLAY, WHITE, player1ButtonRect.inflate(20, 5), 0)
 	
 	player2ButtonObj = pygame.font.SysFont(STARTSCREENFONT, 25)
-	player2Button = player2ButtonObj.render("      AI       ", True, BLACK)
+	player2Button = player2ButtonObj.render("  Player 2  ", True, BLACK)
 	player2ButtonRect = player2Button.get_rect()
 	player2ButtonRect.center = (WINWIDTH * 0.5 + 75, WINHEIGHT * 0.69)
 	player2Rect = pygame.draw.rect(DISPLAY, WHITE, player2ButtonRect.inflate(20, 5), 0)
