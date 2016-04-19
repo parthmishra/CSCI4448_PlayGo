@@ -22,7 +22,8 @@ def main():
 	DISPLAY = pygame.display.set_mode((WINWIDTH, WINHEIGHT))
 	FPSCLOCK = pygame.time.Clock()
 	
-	grid = showStartScreen()
+	gridsize = showStartScreen() 		#Make this a tuple to collect game mode and names
+	playGo(gridsize)
 
 def showStartScreen():
 	mousex = 0
@@ -157,8 +158,78 @@ def showStartScreen():
 		
 		FPSCLOCK.tick(FPS)
 	
-	print grid
+	DISPLAY.fill(TAN)
 	return grid
+	
+def playGo(gridsize):
+	mousex = 0
+	mousey = 0
+	
+	boxStartY = 75
+	gridDimension = WINHEIGHT - (boxStartY * 2)
+	boxDimension = gridDimension / gridsize
+	boxStartX = (WINWIDTH / 2) - (boxDimension * (float(gridsize) / 2))
+	
+	for i in range (0, gridsize):
+		for j in range(0, gridsize):
+			pygame.draw.rect(DISPLAY, BLACK, (boxStartX + (i * boxDimension), boxStartY + (j * boxDimension), boxDimension, boxDimension), 2)
+	
+	boardDimension = gridDimension + boxDimension
+	boardStartX = boxStartX - (boxDimension / 2)
+	boardStartY = boxStartY - (boxDimension / 2)
+	boardSurface = pygame.Surface((boardDimension, boardDimension))
+	boardSurface.fill(TAN)
+	boardSurface.set_alpha(1)
+	boardArr = []
+	for i in range (0, gridsize + 1):
+		for j in range (0, gridsize + 1):
+			boardArr.append( pygame.draw.circle(boardSurface, LTGRAY, ((boxDimension / 2) + (i * boxDimension), (boxDimension / 2) + (j * boxDimension)), boxDimension / 3) )
+	
+	cont = True
+	while cont:
+		
+		
+		mousePress = False
+		for event in pygame.event.get():
+			if event.type == MOUSEBUTTONUP:
+				if event.button == 1:
+					mousex, mousey = event.pos
+					mousePress = True
+			elif event.type == MOUSEMOTION:
+					mousex, mousey = event.pos
+			elif event.type == KEYUP:
+				if event.key == K_ESCAPE:
+					pygame.quit()
+					sys.exit()
+		
+		pieceSurface = pygame.Surface((boardDimension, boardDimension))
+		pieceSurface.fill(TAN)
+		pieceArr = []
+		for i in range (0, gridsize + 1):
+			for j in range (0, gridsize + 1):
+				pieceArr.append(False)
+		
+		for i in range (0, gridsize + 1):
+			for j in range (0, gridsize + 1):
+				if boardArr[(gridsize + 1) * i + j].collidepoint(mousex - boardStartX, mousey - boardStartY):
+					pygame.draw.circle(pieceSurface, LTGRAY, ((boxDimension / 2) + (i * boxDimension), (boxDimension / 2) + (j * boxDimension)), boxDimension / 3)
+				else:
+					pygame.draw.circle(pieceSurface, TAN, ((boxDimension / 2) + (i * boxDimension), (boxDimension / 2) + (j * boxDimension)), boxDimension / 3)
+
+		if mousePress:
+			for i in range (0, gridsize + 1):
+				for j in range (0, gridsize + 1):
+					if boardArr[(gridsize + 1) * i + j].collidepoint(mousex - boardStartX, mousey - boardStartY):
+						print i, j
+						
+		DISPLAY.blit(pieceSurface, (boardStartX, boardStartY))
+		
+		for i in range (0, gridsize):
+			for j in range(0, gridsize):
+				pygame.draw.rect(DISPLAY, BLACK, (boxStartX + (i * boxDimension), boxStartY + (j * boxDimension), boxDimension, boxDimension), 2)
+						
+		pygame.display.update()
+	
 
 class scoreBoard:
 
