@@ -14,6 +14,8 @@ FPS = 20
 STARTSCREENFONT = "arial"
 WINWIDTH = 800
 WINHEIGHT = 600
+PLAYER1NAME = "Player 1"
+PLAYER2NAME = "Player 2"
 
 def main():
 	global DISPLAY, FPSCLOCK
@@ -52,12 +54,16 @@ def showStartScreen():
 	nameTextRect.center = (WINWIDTH * 0.5, WINHEIGHT * 0.6)
 	
 	
+	
+	
 	#Displaying non-changing parts of the screen
 	DISPLAY.fill(TAN)
 	DISPLAY.blit(titleText, titleTextRect)
 	DISPLAY.blit(gridSizeText, gridSizeTextRect)
 	DISPLAY.blit(gameModeText, gameModeTextRect)
 	DISPLAY.blit(nameText, nameTextRect)
+	
+	
 	
 	
 	#Adding options buttons
@@ -170,6 +176,9 @@ def playGo(gridsize):
 	boxDimension = gridDimension / gridsize
 	boxStartX = (WINWIDTH / 2) - (boxDimension * (float(gridsize) / 2))
 	
+	
+	
+	
 	for i in range (0, gridsize):
 		for j in range(0, gridsize):
 			pygame.draw.rect(DISPLAY, BLACK, (boxStartX + (i * boxDimension), boxStartY + (j * boxDimension), boxDimension, boxDimension), 2)
@@ -184,6 +193,25 @@ def playGo(gridsize):
 	for i in range (0, gridsize + 1):
 		for j in range (0, gridsize + 1):
 			boardArr.append( pygame.draw.circle(boardSurface, LTGRAY, ((boxDimension / 2) + (i * boxDimension), (boxDimension / 2) + (j * boxDimension)), boxDimension / 3) )
+	
+	
+	#UI Overlay
+	pygame.draw.rect(DISPLAY, WHITE, (0, 0, WINWIDTH, boxStartY))
+	pygame.draw.rect(DISPLAY, WHITE, (0, boardStartY + boardDimension - (boxDimension / 2), WINWIDTH, boxStartY))
+	
+	p1TextObj = pygame.font.SysFont(STARTSCREENFONT, 30)
+	p1Text = p1TextObj.render(PLAYER1NAME, True, BLACK)
+	p1TextRect = p1Text.get_rect()
+	p1TextRect.center = (75, 20)
+	
+	p2TextObj = pygame.font.SysFont(STARTSCREENFONT, 30)
+	p2Text = p2TextObj.render(PLAYER2NAME, True, BLACK)
+	p2TextRect = p2Text.get_rect()
+	p2TextRect.center = (WINWIDTH - 75, 20)
+	
+	DISPLAY.blit(p1Text, p1TextRect)
+	DISPLAY.blit(p2Text, p2TextRect)
+	
 	
 	cont = True
 	while cont:
@@ -209,12 +237,19 @@ def playGo(gridsize):
 			for j in range (0, gridsize + 1):
 				pieceArr.append(False)
 		
+		tempCirX = 0
+		tempCirY = 0
 		for i in range (0, gridsize + 1):
 			for j in range (0, gridsize + 1):
 				if boardArr[(gridsize + 1) * i + j].collidepoint(mousex - boardStartX, mousey - boardStartY):
-					pygame.draw.circle(pieceSurface, LTGRAY, ((boxDimension / 2) + (i * boxDimension), (boxDimension / 2) + (j * boxDimension)), boxDimension / 3)
-				else:
-					pygame.draw.circle(pieceSurface, TAN, ((boxDimension / 2) + (i * boxDimension), (boxDimension / 2) + (j * boxDimension)), boxDimension / 3)
+					tempCirX = (boxDimension / 2) + (i * boxDimension)
+					tempCirY = (boxDimension / 2) + (j * boxDimension)
+		
+		pygame.draw.rect(pieceSurface, WHITE, (0, 0, boardDimension, boxDimension / 2))
+		pygame.draw.rect(pieceSurface, WHITE, (0, boardDimension - (boxDimension / 2), boardDimension, boxDimension / 2)) 
+		if (tempCirX and tempCirY):
+			pygame.draw.circle(pieceSurface, LTGRAY, (tempCirX, tempCirY), boxDimension / 3)
+
 
 		if mousePress:
 			for i in range (0, gridsize + 1):
@@ -227,7 +262,7 @@ def playGo(gridsize):
 		for i in range (0, gridsize):
 			for j in range(0, gridsize):
 				pygame.draw.rect(DISPLAY, BLACK, (boxStartX + (i * boxDimension), boxStartY + (j * boxDimension), boxDimension, boxDimension), 2)
-						
+			
 		pygame.display.update()
 	
 
