@@ -166,19 +166,20 @@ def showStartScreen():
 	
 	DISPLAY.fill(TAN)
 	return grid
+
 	
 def playGo(gridsize):
 	mousex = 0
 	mousey = 0
 	
+	player1 = Player(WHITE, PLAYER1NAME)
+	player2 = Player(BLACK, PLAYER2NAME)
+	
 	boxStartY = 75
 	gridDimension = WINHEIGHT - (boxStartY * 2)
 	boxDimension = gridDimension / gridsize
 	boxStartX = (WINWIDTH / 2) - (boxDimension * (float(gridsize) / 2))
-	
-	
-	
-	
+		
 	for i in range (0, gridsize):
 		for j in range(0, gridsize):
 			pygame.draw.rect(DISPLAY, BLACK, (boxStartX + (i * boxDimension), boxStartY + (j * boxDimension), boxDimension, boxDimension), 2)
@@ -200,23 +201,27 @@ def playGo(gridsize):
 	pygame.draw.rect(DISPLAY, WHITE, (0, boardStartY + boardDimension - (boxDimension / 2), WINWIDTH, boxStartY))
 	
 	p1TextObj = pygame.font.SysFont(STARTSCREENFONT, 30)
-	p1Text = p1TextObj.render(PLAYER1NAME, True, BLACK)
+	p1Text = p1TextObj.render(player1.name, True, BLACK)
 	p1TextRect = p1Text.get_rect()
 	p1TextRect.center = (75, 20)
 	
 	p2TextObj = pygame.font.SysFont(STARTSCREENFONT, 30)
-	p2Text = p2TextObj.render(PLAYER2NAME, True, BLACK)
+	p2Text = p2TextObj.render(player2.name, True, BLACK)
 	p2TextRect = p2Text.get_rect()
 	p2TextRect.center = (WINWIDTH - 75, 20)
 	
 	DISPLAY.blit(p1Text, p1TextRect)
 	DISPLAY.blit(p2Text, p2TextRect)
 	
+	currentplayer = player1
+	
+	placedPieces = []
+	for i in range (0, gridsize + 1):
+		for j in range (0, gridsize + 1):
+			placedPieces.append([False, currentplayer]) 		#First item is if the piece exists, 2nd item False = white, True = black to enable pieces with outlines
 	
 	cont = True
-	while cont:
-		
-		
+	while cont:		
 		mousePress = False
 		for event in pygame.event.get():
 			if event.type == MOUSEBUTTONUP:
@@ -255,14 +260,26 @@ def playGo(gridsize):
 			for i in range (0, gridsize + 1):
 				for j in range (0, gridsize + 1):
 					if boardArr[(gridsize + 1) * i + j].collidepoint(mousex - boardStartX, mousey - boardStartY):
-						print i, j
+						if not(placedPieces[(gridsize + 1) * i + j][0]): 			#if the piece is not placed yet
+							print "adding piece, %s" % currentplayer.name
+							placedPieces[i * (gridsize + 1) + j] = [True, currentplayer]
+							if currentplayer == player1:
+								currentplayer = player2
+							else:
+								currentplayer = player1
 						
 		DISPLAY.blit(pieceSurface, (boardStartX, boardStartY))
 		
 		for i in range (0, gridsize):
 			for j in range(0, gridsize):
 				pygame.draw.rect(DISPLAY, BLACK, (boxStartX + (i * boxDimension), boxStartY + (j * boxDimension), boxDimension, boxDimension), 2)
-			
+		
+		for i in range (0, gridsize + 1):
+			for j in range (0, gridsize + 1):
+				if placedPieces[i * (gridsize + 1) + j][0]:			
+					placedPieces[i * (gridsize + 1) + j][1].placePiece( int(boardStartX + (boxDimension / 2) + (i * boxDimension)), int(boardStartY + (boxDimension / 2) + (j * boxDimension)), boxDimension / 3 )
+					
+					
 		pygame.display.update()
 	
 
@@ -299,8 +316,9 @@ class Player:
 		self.color = color
 		self.name = name
 
-	def placePiece():
-		pass
+	def placePiece(self, xcoord, ycoord, pieceWidth):
+		pygame.draw.circle(DISPLAY, self.color, (xcoord, ycoord), pieceWidth)
+		pygame.draw.circle(DISPLAY, BLACK if self.color == WHITE else WHITE, (xcoord, ycoord), pieceWidth, 1)
 
 	def resign():
 		pass
