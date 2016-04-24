@@ -10,7 +10,7 @@ TAN			= (224,	176,  54)
 GREEN		= (  0, 255,   0)
 
 #Game Options
-FPS = 20
+FPS = 5
 STARTSCREENFONT = "arial"
 WINWIDTH = 800
 WINHEIGHT = 600
@@ -210,8 +210,15 @@ def playGo(gridsize):
 	p2TextRect = p2Text.get_rect()
 	p2TextRect.center = (WINWIDTH - 75, 20)
 	
+	passButtonObj = pygame.font.SysFont(STARTSCREENFONT, 25)
+	passButton = passButtonObj.render("  PASS  ", True, BLACK)
+	passButtonRect = passButton.get_rect()
+	passButtonRect.center = (WINWIDTH - 75, boardDimension + 75)
+	gridSize11Rect = pygame.draw.rect(DISPLAY, BLACK, passButtonRect.inflate(20, 5), 1)
+	
 	DISPLAY.blit(p1Text, p1TextRect)
 	DISPLAY.blit(p2Text, p2TextRect)
+	DISPLAY.blit(passButton, passButtonRect)
 	
 	currentplayer = player1
 	
@@ -281,6 +288,7 @@ def playGo(gridsize):
 					
 					
 		pygame.display.update()
+		FPSCLOCK.tick(FPS)
 	
 
 class scoreBoard:
