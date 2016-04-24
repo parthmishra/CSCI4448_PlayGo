@@ -1,6 +1,6 @@
 import pygame, sys
 import config as c
-import board as board
+import startscreen as startscreen
 from pygame.locals import *
 
 PLAYER1NAME = "Player 1"
@@ -13,7 +13,7 @@ def main():
 	DISPLAY = pygame.display.set_mode((c.WINWIDTH, c.WINHEIGHT))
 	FPSCLOCK = pygame.time.Clock()
 	
-	gridsize = board.showStartScreen(DISPLAY, pygame.time.Clock()) 		#Make this a tuple to collect game mode and names
+	gridsize = startscreen.showStartScreen(DISPLAY, pygame.time.Clock()) 		#Make this a tuple to collect game mode and names
 	
 	playGo(gridsize)
 	
