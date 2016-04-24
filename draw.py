@@ -17,7 +17,6 @@ class Label:
 		self.labelRect.center = (c.WINWIDTH * widthMod + dx, c.WINHEIGHT * heightMod + dy)
 
 	def drawRect(self, surface, rectColor, inflateX=0, inflateY=0, width=0):
-		print "YES"
 		if inflateX or inflateY != 0:
 			self.labelRect.inflate(inflateX, inflateY)
 		self.labelRect = pygame.draw.rect(surface, rectColor, self.labelRect, width)
