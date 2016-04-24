@@ -37,7 +37,7 @@ def playGo(gridsize):
 	boardArr = []
 	for i in range (0, gridsize + 1):
 		for j in range (0, gridsize + 1):
-			boardArr.append( pygame.draw.circle(boardSurface, LTGRAY, ((boxDimension / 2) + (i * boxDimension), (boxDimension / 2) + (j * boxDimension)), boxDimension / 3) )
+			boardArr.append( pygame.draw.circle(boardSurface, c.LTGRAY, ((boxDimension / 2) + (i * boxDimension), (boxDimension / 2) + (j * boxDimension)), boxDimension / 3) )
 	
 	cont = True
 	while cont:
@@ -66,7 +66,7 @@ def playGo(gridsize):
 		for i in range (0, gridsize + 1):
 			for j in range (0, gridsize + 1):
 				if boardArr[(gridsize + 1) * i + j].collidepoint(mousex - boardStartX, mousey - boardStartY):
-					pygame.draw.circle(pieceSurface, LTGRAY, ((boxDimension / 2) + (i * boxDimension), (boxDimension / 2) + (j * boxDimension)), boxDimension / 3)
+					pygame.draw.circle(pieceSurface, c.LTGRAY, ((boxDimension / 2) + (i * boxDimension), (boxDimension / 2) + (j * boxDimension)), boxDimension / 3)
 				else:
 					pygame.draw.circle(pieceSurface, c.TAN, ((boxDimension / 2) + (i * boxDimension), (boxDimension / 2) + (j * boxDimension)), boxDimension / 3)
 
