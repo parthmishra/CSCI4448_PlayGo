@@ -1,4 +1,6 @@
 import pygame, sys
+import config as c
+import board as board
 from pygame.locals import *
 
 #COLOR TABLE 	R    G    B
@@ -17,15 +19,17 @@ WINHEIGHT = 600
 PLAYER1NAME = "Player 1"
 PLAYER2NAME = "Player 2"
 
+
 def main():
 	global DISPLAY, FPSCLOCK
 	pygame.init()
 	pygame.display.set_caption("PlayGo!")
-	DISPLAY = pygame.display.set_mode((WINWIDTH, WINHEIGHT))
+	DISPLAY = pygame.display.set_mode((c.WINWIDTH, c.WINHEIGHT))
 	FPSCLOCK = pygame.time.Clock()
 	
-	gridsize = showStartScreen() 		#Make this a tuple to collect game mode and names
+	gridsize = board.showStartScreen(DISPLAY, pygame.time.Clock()) 		#Make this a tuple to collect game mode and names
 	playGo(gridsize)
+
 
 def showStartScreen():
 	mousex = 0
@@ -166,7 +170,6 @@ def showStartScreen():
 	
 	DISPLAY.fill(TAN)
 	return grid
-
 	
 def playGo(gridsize):
 	mousex = 0
@@ -176,24 +179,24 @@ def playGo(gridsize):
 	player2 = Player(BLACK, PLAYER2NAME)
 	
 	boxStartY = 75
-	gridDimension = WINHEIGHT - (boxStartY * 2)
+	gridDimension = c.WINHEIGHT - (boxStartY * 2)
 	boxDimension = gridDimension / gridsize
-	boxStartX = (WINWIDTH / 2) - (boxDimension * (float(gridsize) / 2))
-		
+	boxStartX = (c.WINWIDTH / 2) - (boxDimension * (float(gridsize) / 2))
+	
 	for i in range (0, gridsize):
 		for j in range(0, gridsize):
-			pygame.draw.rect(DISPLAY, BLACK, (boxStartX + (i * boxDimension), boxStartY + (j * boxDimension), boxDimension, boxDimension), 2)
+			pygame.draw.rect(DISPLAY, c.BLACK, (boxStartX + (i * boxDimension), boxStartY + (j * boxDimension), boxDimension, boxDimension), 2)
 	
 	boardDimension = gridDimension + boxDimension
 	boardStartX = boxStartX - (boxDimension / 2)
 	boardStartY = boxStartY - (boxDimension / 2)
 	boardSurface = pygame.Surface((boardDimension, boardDimension))
-	boardSurface.fill(TAN)
+	boardSurface.fill(c.TAN)
 	boardSurface.set_alpha(1)
 	boardArr = []
 	for i in range (0, gridsize + 1):
 		for j in range (0, gridsize + 1):
-			boardArr.append( pygame.draw.circle(boardSurface, LTGRAY, ((boxDimension / 2) + (i * boxDimension), (boxDimension / 2) + (j * boxDimension)), boxDimension / 3) )
+			boardArr.append( pygame.draw.circle(boardSurface, c.LTGRAY, ((boxDimension / 2) + (i * boxDimension), (boxDimension / 2) + (j * boxDimension)), boxDimension / 3) )
 	
 	
 	#UI Overlay
@@ -243,7 +246,7 @@ def playGo(gridsize):
 					sys.exit()
 		
 		pieceSurface = pygame.Surface((boardDimension, boardDimension))
-		pieceSurface.fill(TAN)
+		pieceSurface.fill(c.TAN)
 		pieceArr = []
 		for i in range (0, gridsize + 1):
 			for j in range (0, gridsize + 1):
@@ -261,7 +264,9 @@ def playGo(gridsize):
 		pygame.draw.rect(pieceSurface, WHITE, (0, boardDimension - (boxDimension / 2), boardDimension, boxDimension / 2)) 
 		if (tempCirX and tempCirY):
 			pygame.draw.circle(pieceSurface, LTGRAY, (tempCirX, tempCirY), boxDimension / 3)
-
+					pygame.draw.circle(pieceSurface, c.LTGRAY, ((boxDimension / 2) + (i * boxDimension), (boxDimension / 2) + (j * boxDimension)), boxDimension / 3)
+				else:
+					pygame.draw.circle(pieceSurface, c.TAN, ((boxDimension / 2) + (i * boxDimension), (boxDimension / 2) + (j * boxDimension)), boxDimension / 3)
 
 		if mousePress:
 			for i in range (0, gridsize + 1):
@@ -285,8 +290,8 @@ def playGo(gridsize):
 			for j in range (0, gridsize + 1):
 				if placedPieces[i * (gridsize + 1) + j][0]:			
 					placedPieces[i * (gridsize + 1) + j][1].placePiece( int(boardStartX + (boxDimension / 2) + (i * boxDimension)), int(boardStartY + (boxDimension / 2) + (j * boxDimension)), boxDimension / 3 )
-					
-					
+				pygame.draw.rect(DISPLAY, c.BLACK, (boxStartX + (i * boxDimension), boxStartY + (j * boxDimension), boxDimension, boxDimension), 2)
+						
 		pygame.display.update()
 		FPSCLOCK.tick(FPS)
 	
