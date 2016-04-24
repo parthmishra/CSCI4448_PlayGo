@@ -111,7 +111,7 @@ class Grid:				#Singleton Pattern
 				for i in range (0, self.gridsize + 1):
 					for j in range (0, self.gridsize + 1):
 						if self.boardArr[(self.gridsize + 1) * i + j].collidepoint(mousex - self.boardStartX, mousey - self.boardStartY):
-							if not(self.placedPieces[(self.gridsize + 1) * i + j][0]): 			#if the piece is not placed yet
+							if not(self.placedPieces[(self.gridsize + 1) * i + j][0]) and self.__calcValidity(i, j): 			#if the piece is not placed yet
 								print "adding piece at", i, j, "  ", self.currentplayer.name
 								self.placedPieces[i * (self.gridsize + 1) + j] = [True, self.currentplayer]
 								self.__switchPlayer()
@@ -135,7 +135,14 @@ class Grid:				#Singleton Pattern
 				self.currentplayer = self.player2
 			else:
 				self.currentplayer = self.player1
-				
+		
+		def __calcValidity(self, i, j): #returns True for a valid move, False for an invalid move
+			if not(self.placedPieces[(i - 1) * (self.gridsize + 1) + j][0]) or self.placedPieces[(i - 1) * (self.gridsize + 1) + j][1] == self.currentplayer: return True
+			if not(self.placedPieces[i * (self.gridsize + 1) + j - 1][0]) or self.placedPieces[i * (self.gridsize + 1) + j - 1][1] == self.currentplayer: return True
+			if not(self.placedPieces[i * (self.gridsize + 1) + j + 1][0]) or self.placedPieces[i * (self.gridsize + 1) + j + 1][1] == self.currentplayer: return True
+			if not(self.placedPieces[(i + 1) * (self.gridsize + 1) + j][0]) or self.placedPieces[(i + 1) * (self.gridsize + 1) + j][1] == self.currentplayer: return True
+			return False
+			
 			
 	instance = None
 	def __init__(self, DISPLAY, gridsize, boxStartY, player1, player2):

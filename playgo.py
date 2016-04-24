@@ -16,8 +16,8 @@ def main():
 	
 	player1name = "Player 1"
 	player2name = "Player 2"
-	player1 = Player(c.WHITE, player1name)
-	player2 = Player(c.BLACK, player2name)
+	player1 = Player(c.BLACK, player1name)
+	player2 = Player(c.WHITE, player2name)
 	gamescreen.displayGame(gridsize, player1, player2, DISPLAY, FPSCLOCK)
 	
 
@@ -31,11 +31,6 @@ class scoreBoard:
 
 	def endGame():
 		pass
-
-class Piece:
-
-	def __init__(self, color):
-		self.color = color
 
 class Player:
 	
