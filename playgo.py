@@ -109,16 +109,16 @@ def playGo(gridsize):
 		pygame.draw.rect(pieceSurface, c.WHITE, (0, 0, boardDimension, boxDimension / 2))
 		pygame.draw.rect(pieceSurface, c.WHITE, (0, boardDimension - (boxDimension / 2), boardDimension, boxDimension / 2)) 
 		if (tempCirX and tempCirY):
-			pygame.draw.circle(pieceSurface, c.LTGRAY, ((boxDimension / 2) + (i * boxDimension), (boxDimension / 2) + (j * boxDimension)), boxDimension / 3)
-		else:
-			pygame.draw.circle(pieceSurface, c.TAN, ((boxDimension / 2) + (i * boxDimension), (boxDimension / 2) + (j * boxDimension)), boxDimension / 3)
+			pygame.draw.circle(pieceSurface, c.LTGRAY, (tempCirX, tempCirY), boxDimension / 3)
+		#else:
+		#	pygame.draw.circle(pieceSurface, c.TAN, (tempCirX, tempCirY), boxDimension / 3)
 
 		if mousePress:
 			for i in range (0, gridsize + 1):
 				for j in range (0, gridsize + 1):
 					if boardArr[(gridsize + 1) * i + j].collidepoint(mousex - boardStartX, mousey - boardStartY):
 						if not(placedPieces[(gridsize + 1) * i + j][0]): 			#if the piece is not placed yet
-							print "adding piece, %s" % currentplayer.name
+							print "adding piece at", i, j, "  ", currentplayer.name
 							placedPieces[i * (gridsize + 1) + j] = [True, currentplayer]
 							if currentplayer == player1:
 								currentplayer = player2
@@ -135,7 +135,6 @@ def playGo(gridsize):
 			for j in range (0, gridsize + 1):
 				if placedPieces[i * (gridsize + 1) + j][0]:			
 					placedPieces[i * (gridsize + 1) + j][1].placePiece( int(boardStartX + (boxDimension / 2) + (i * boxDimension)), int(boardStartY + (boxDimension / 2) + (j * boxDimension)), boxDimension / 3 )
-				pygame.draw.rect(DISPLAY, c.BLACK, (boxStartX + (i * boxDimension), boxStartY + (j * boxDimension), boxDimension, boxDimension), 2)
 						
 		pygame.display.update()
 		FPSCLOCK.tick(c.FPS)
