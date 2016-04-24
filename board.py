@@ -27,7 +27,7 @@ def showStartScreen(DISPLAY, FPSCLOCK):
 	
 	#Adding text labels to the screen
 	titleLabel = Label(c.STARTSCREENFONT, 40, True, "Start Game", c.BLACK, 0.5, 0.1)
-	gridSizeLabel = Label(c.STARTSCREENFONT, 30, True, "Grid Size", c.BLACK, 0.5, 0.2)
+	gridSizeLabel = Label(c.STARTSCREENFONT, 30, False, "Grid Size", c.BLACK, 0.5, 0.2)
 	gameModeLabel = Label(c.STARTSCREENFONT, 30, False, "Game Mode", c.BLACK, 0.5, 0.4)
 	nameLabel = Label(c.STARTSCREENFONT, 30, False, "Name", c.BLACK, 0.5, 0.6)
 
@@ -42,19 +42,19 @@ def showStartScreen(DISPLAY, FPSCLOCK):
 	
 	
 	#Adding options buttons
-	gridSize90Button = Label(c.STARTSCREENFONT, 25, False, "9 x 9", c.BLACK, 0.5,0.29, -150)
+	gridSize90Button = Label(c.STARTSCREENFONT, 25, False, "  9 x 9  ", c.BLACK, 0.5,0.29, -150)
 	gridSize90Button.drawRect(DISPLAY,c.WHITE,20,5)
 
-	gridSize110Button = Label(c.STARTSCREENFONT, 25, False, "11 x 11", c.BLACK, 0.5,0.29)
+	gridSize110Button = Label(c.STARTSCREENFONT, 25, False, " 11 x 11 ", c.BLACK, 0.5,0.29)
 	gridSize110Button.drawRect(DISPLAY,c.WHITE,20,5)
 
-	gridSize190Button = Label(c.STARTSCREENFONT, 25, False, "19 x 19", c.BLACK, 0.5,0.29, 150)
+	gridSize190Button = Label(c.STARTSCREENFONT, 25, False, " 19 x 19 ", c.BLACK, 0.5,0.29, 150)
 	gridSize190Button.drawRect(DISPLAY,c.WHITE,20,5)
 
-	mode2PlayerButton = Label(c.STARTSCREENFONT, 25, False, "2 Player", c.BLACK, 0.5,0.49,-75)
+	mode2PlayerButton = Label(c.STARTSCREENFONT, 25, False, " 2 Player ", c.BLACK, 0.5,0.49,-75)
 	mode2PlayerButton.drawRect(DISPLAY,c.WHITE,20,5)
 
-	modeAIButton = Label(c.STARTSCREENFONT, 25, False, " vs. AI", c.BLACK, 0.5,0.49,75)
+	modeAIButton = Label(c.STARTSCREENFONT, 25, False, "  vs. AI  ", c.BLACK, 0.5,0.49,75)
 	modeAIButton.drawRect(DISPLAY,c.DRKGRAY,20,5)
 	
 	player1Button = Label(c.STARTSCREENFONT, 25, False, " Player 1 ", c.BLACK, 0.5,0.69,-75)
@@ -93,7 +93,7 @@ def showStartScreen(DISPLAY, FPSCLOCK):
 				gridSize90Button.drawRect(DISPLAY, c.LTGRAY)
 				gridSize110Button.drawRect(DISPLAY, c.WHITE)
 				gridSize190Button.drawRect(DISPLAY, c.WHITE)
-				gride = 9
+				grid = 9
 			if gridSize110Button.labelRect.collidepoint(mousex, mousey):
 				gridSize90Button.drawRect(DISPLAY, c.WHITE)
 				gridSize110Button.drawRect(DISPLAY, c.LTGRAY)

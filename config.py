@@ -10,7 +10,7 @@ TAN			= (224,	176,  54)
 GREEN		= (  0, 255,   0)
 
 #Game Options
-FPS = 20
+FPS = 10
 STARTSCREENFONT = "arial"
 WINWIDTH = 800
 WINHEIGHT = 600
