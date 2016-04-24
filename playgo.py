@@ -1,5 +1,6 @@
 import pygame, sys
 import config as c
+import draw
 import startscreen as startscreen
 from pygame.locals import *
 
@@ -49,25 +50,17 @@ def playGo(gridsize):
 	pygame.draw.rect(DISPLAY, c.WHITE, (0, 0, c.WINWIDTH, boxStartY))
 	pygame.draw.rect(DISPLAY, c.WHITE, (0, boardStartY + boardDimension - (boxDimension / 2), c.WINWIDTH, boxStartY))
 	
-	p1TextObj = pygame.font.SysFont(c.STARTSCREENFONT, 30)
-	p1Text = p1TextObj.render(player1.name, True, c.BLACK)
-	p1TextRect = p1Text.get_rect()
-	p1TextRect.center = (75, 20)
 	
-	p2TextObj = pygame.font.SysFont(c.STARTSCREENFONT, 30)
-	p2Text = p2TextObj.render(player2.name, True, c.BLACK)
-	p2TextRect = p2Text.get_rect()
-	p2TextRect.center = (c.WINWIDTH - 75, 20)
+	p1Label = draw.Label(c.STARTSCREENFONT, 30, False, player1.name, c.BLACK, 0, 0, 75, 20)
+	p2Label = draw.Label(c.STARTSCREENFONT, 30, False, player2.name, c.BLACK, 1, 0, -75, 20)
 	
-	passButtonObj = pygame.font.SysFont(c.STARTSCREENFONT, 25)
-	passButton = passButtonObj.render("  PASS  ", True, c.BLACK)
-	passButtonRect = passButton.get_rect()
-	passButtonRect.center = (c.WINWIDTH - 75, boardDimension + 75)
-	gridSize11Rect = pygame.draw.rect(DISPLAY, c.BLACK, passButtonRect.inflate(20, 5), 1)
+	passButton = draw.Label(c.STARTSCREENFONT, 30, False, " PASS ", c.BLACK, 1, 1, -75, -40)
+	passButton.drawRect(DISPLAY, c.BLACK, 0, 0, 1)
 	
-	DISPLAY.blit(p1Text, p1TextRect)
-	DISPLAY.blit(p2Text, p2TextRect)
-	DISPLAY.blit(passButton, passButtonRect)
+	
+	DISPLAY.blit(p1Label.labelText, p1Label.labelRect)
+	DISPLAY.blit(p2Label.labelText, p2Label.labelRect)
+	DISPLAY.blit(passButton.labelText, passButton.labelRect)
 	
 	currentplayer = player1
 	
@@ -175,7 +168,7 @@ class Player:
 
 	def placePiece(self, xcoord, ycoord, pieceWidth):
 		pygame.draw.circle(DISPLAY, self.color, (xcoord, ycoord), pieceWidth)
-		pygame.draw.circle(DISPLAY, c.BLACK if self.color == c.WHITE else c.WHITE, (xcoord, ycoord), pieceWidth, 1)
+		pygame.draw.circle(DISPLAY, c.BLACK if self.color == c.WHITE else c.WHITE, (xcoord, ycoord), pieceWidth + 1, 1)
 
 	def resign():
 		pass
