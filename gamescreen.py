@@ -151,6 +151,7 @@ class Grid:				#Singleton Pattern
 			return False
 		
 		def __calcCapture(self, i, j):
+                        pass
 			
 			
 			

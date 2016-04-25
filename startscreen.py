@@ -39,13 +39,6 @@ def showStartScreen(DISPLAY, FPSCLOCK):
                         name_box = draw.Label(c.STARTSCREENFONT, 18, False, input_name, c.WHITE, self.screenx, self.screeny, self.scalex, self.scaley)
                         name_box.drawRect(DISPLAY, c.BLACK, 20, 5)
                         DISPLAY.blit(name_box.labelText, name_box.labelRect)
-                      
-                def __del__(self):
-                        name_box.drawRect(DISPLAY, c.TAN, 20, 5)
-                        DISPLAY.blit(name_box.labelText, name_box.labelRect)
-                        del self
-                        Namebox.namebox_count -= 1
-                        
                         
 	mousex = 0
 	mousey = 0
