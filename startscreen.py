@@ -86,8 +86,6 @@ def showStartScreen(DISPLAY, FPSCLOCK):
 
 	startButton = draw.Label(c.STARTSCREENFONT, 25, False, " START ", c.BLACK, 0.5,0.9)
 	startButton.drawRect(DISPLAY, c.GREEN, 20, 5)
-	
-	
 
 	DISPLAY.blit(mode2PlayerButton.labelText, mode2PlayerButton.labelRect)
 	DISPLAY.blit(modeAIButton.labelText, modeAIButton.labelRect)
@@ -150,7 +148,6 @@ def showStartScreen(DISPLAY, FPSCLOCK):
 		DISPLAY.blit(gridSize9Button.labelText, gridSize9Button.labelRect)
 		DISPLAY.blit(gridSize11Button.labelText, gridSize11Button.labelRect)
 		DISPLAY.blit(gridSize19Button.labelText, gridSize19Button.labelRect)
-		
 		
 		pygame.display.update()
 		

@@ -161,18 +161,73 @@ class Grid:				#Singleton Pattern
 				self.currentplayer = self.player1
 		
 		def __calcValidity(self, i, j): #returns True for a valid move, False for an invalid move
-			captured = self.__calcCapture(i, j)
+			self.placedPieces[i * (self.gridsize + 1) + j] = [True, self.currentplayer]
+			self.__calcCapture(i, j)
+			self.placedPieces[i * (self.gridsize + 1) + j] = [False, self.currentplayer]
 			return self.__calcLiberties(i, j)			
 		
 		def __calcCapture(self, i, j):
-			return False
+			if not((i - 1) < 0):
+				if self.placedPieces[(i - 1) * (self.gridsize + 1) + j][0] and not(self.placedPieces[(i - 1) * (self.gridsize + 1) + j][1] == self.currentplayer):
+					if not(self.__calcLiberties((i - 1), j)):
+						self.placedPieces[(i - 1) * (self.gridsize + 1) + j] = [False, self.currentplayer]
+			if not((j - 1) < 0):
+				if self.placedPieces[i * (self.gridsize + 1) + (j - 1)][0] and not(self.placedPieces[i * (self.gridsize + 1) + (j - 1)][1] == self.currentplayer):
+					if not(self.__calcLiberties(i, (j - 1))):
+						self.placedPieces[i * (self.gridsize + 1) + (j - 1)] = [False, self.currentplayer]
+			if not((j + 1) > self.gridsize):
+				if self.placedPieces[i * (self.gridsize + 1) + (j + 1)][0] and not(self.placedPieces[i * (self.gridsize + 1) + (j + 1)][1] == self.currentplayer):
+					if not(self.__calcLiberties(i, (j + 1))):
+						self.placedPieces[i * (self.gridsize + 1) + (j + 1)] = [False, self.currentplayer]
+			if not((i + 1) > self.gridsize):
+				if self.placedPieces[(i + 1) * (self.gridsize + 1) + j][0] and not(self.placedPieces[(i + 1) * (self.gridsize + 1) + j][1] == self.currentplayer):
+					if not(self.__calcLiberties((i + 1), j)):
+						self.placedPieces[(i + 1) * (self.gridsize) + j] = [False, self.currentplayer]
 			
 		def __calcLiberties(self, i, j): #returns True for free or sympathetic liberties, False for filled liberties
-			if not(self.placedPieces[(i - 1) * (self.gridsize + 1) + j][0]) or self.placedPieces[(i - 1) * (self.gridsize + 1) + j][1] == self.currentplayer: return True
-			if not(self.placedPieces[i * (self.gridsize + 1) + j - 1][0]) or self.placedPieces[i * (self.gridsize + 1) + j - 1][1] == self.currentplayer: return True
-			if not(self.placedPieces[i * (self.gridsize + 1) + j + 1][0]) or self.placedPieces[i * (self.gridsize + 1) + j + 1][1] == self.currentplayer: return True
-			if not(self.placedPieces[(i + 1) * (self.gridsize + 1) + j][0]) or self.placedPieces[(i + 1) * (self.gridsize + 1) + j][1] == self.currentplayer: return True
-			return False
+			print "Check liberties:", i, j
+			numlibs = 0
+			if not((i - 1) < 0):
+				print "Checking", i - 1, j
+				if self.placedPieces[(i - 1) * (self.gridsize + 1) + j][0]:
+					if self.placedPieces[(i - 1) * (self.gridsize + 1) + j][1] == self.placedPieces[i * (self.gridsize + 1) + j][1]:
+						print "lib at: ", i - 1, j
+						numlibs += 1
+				else:
+					print "lib at: ", i - 1, j
+					numlibs += 1
+			if not((j - 1) < 0):
+				print "Checking", i, j - 1
+				if self.placedPieces[i * (self.gridsize + 1) + j - 1][0]:
+					if self.placedPieces[i * (self.gridsize + 1) + j - 1][1] == self.placedPieces[i * (self.gridsize + 1) + j][1]:
+						print "lib at: ", i, j - 1
+						numlibs += 1
+				else:
+					print "lib at: ", i, j - 1
+					numlibs += 1
+			if not((j + 1) > self.gridsize):
+				print "Checking", i, j + 1
+				if self.placedPieces[i * (self.gridsize + 1) + j + 1][0]:
+					if self.placedPieces[i * (self.gridsize + 1) + j + 1][1] == self.placedPieces[i * (self.gridsize + 1) + j][1]:
+						print "lib at: ", i, j + 1
+						numlibs += 1
+				else:
+					print "lib at: ", i, j + 1
+					numlibs += 1
+			if not((i + 1) > self.gridsize):
+				print "Checking", i + 1, j
+				if self.placedPieces[(i + 1) * (self.gridsize + 1) + j][0]:
+					if self.placedPieces[(i + 1) * (self.gridsize + 1) + j][1] == self.placedPieces[i * (self.gridsize + 1) + j][1]:
+						print "lib at: ", i + 1, j
+						numlibs += 1
+				else:
+					print "lib at: ", i + 1, j
+					numlibs += 1
+			print i, j, ":", numlibs
+			if numlibs:
+				return True
+			else:
+				return False
 			
 		def __pass(self):
 			self.currentplayer.passed = True
