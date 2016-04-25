@@ -26,13 +26,14 @@ def displayGame(gridsize, player1, player2, DISPLAY, FPSCLOCK):
 					pygame.quit()
 					sys.exit()
 		
-		gameboard.updateGrid(mousePress, mousex, mousey)
+		cont = gameboard.updateGrid(mousePress, mousex, mousey)
 		validLabel = draw.Label(c.STARTSCREENFONT, 20, False, gameboard.getValidStr(), c.RED, 0, 1, 75, -40)
 		validLabel.drawRect(DISPLAY, c.WHITE, 0, 0, 0)
 		DISPLAY.blit(validLabel.labelText, validLabel.labelRect)		
 				
 		pygame.display.update()
 		FPSCLOCK.tick(c.FPS)
+		
 		
 class Grid:				#Singleton Pattern
 	class __Grid:
@@ -67,15 +68,11 @@ class Grid:				#Singleton Pattern
 			
 			
 			#UI Overlay
-			pygame.draw.rect(self.display, c.WHITE, (0, 0, c.WINWIDTH, self.boxStartY))
-			pygame.draw.rect(self.display, c.WHITE, (0, self.boardStartY + self.boardDimension - (self.boxDimension / 2), c.WINWIDTH, self.boxStartY))
+			#pygame.draw.rect(self.display, c.WHITE, (0, 0, c.WINWIDTH, self.boxStartY))
+			#pygame.draw.rect(self.display, c.WHITE, (0, self.boardStartY + self.boardDimension - (self.boxDimension / 2), c.WINWIDTH, self.boxStartY))
 			
 			p1Label = draw.Label(c.STARTSCREENFONT, 30, False, self.player1.name, c.BLACK, 0, 0, 75, 20)
 			p2Label = draw.Label(c.STARTSCREENFONT, 30, False, self.player2.name, c.BLACK, 1, 0, -75, 20)
-			
-			
-			passButton = draw.Label(c.STARTSCREENFONT, 30, False, " PASS ", c.BLACK, 1, 1, -75, -40)
-			passButton.drawRect(self.display, c.BLACK, 0, 0, 1)
 			
 			for i in range (0, self.gridsize + 1):
 				for j in range (0, self.gridsize + 1):
@@ -83,11 +80,21 @@ class Grid:				#Singleton Pattern
 			
 			self.display.blit(p1Label.labelText, p1Label.labelRect)
 			self.display.blit(p2Label.labelText, p2Label.labelRect)
-			self.display.blit(passButton.labelText, passButton.labelRect)
 		
 		def __updateGrid(self, mousePress, mousex, mousey):
+			keepPlaying = True
+			
 			pieceSurface = pygame.Surface((self.boardDimension, self.boardDimension))
 			pieceSurface.fill(c.TAN)
+			
+			resignButton = draw.Label(c.STARTSCREENFONT, 30, False, " RESIGN ", c.BLACK, 1, 1, -75, -40)
+			resignButton.drawRect(self.display, c.BLACK, 0, 0, 1)
+			
+			passButton = draw.Label(c.STARTSCREENFONT, 30, False, " PASS ", c.BLACK, 1, 1, -75, -80)
+			passButton.drawRect(self.display, c.BLACK, 0, 0, 1)
+							
+			self.display.blit(passButton.labelText, passButton.labelRect)
+			self.display.blit(resignButton.labelText, resignButton.labelRect)
 			
 			#Fill edges of board with white
 			pygame.draw.rect(pieceSurface, c.WHITE, (0, 0, self.boardDimension, self.boxDimension / 2))													#TOP
@@ -111,19 +118,27 @@ class Grid:				#Singleton Pattern
 			if (tempCirX and tempCirY):
 				pygame.draw.circle(pieceSurface, c.LTGRAY, (tempCirX, tempCirY), self.boxDimension / 3)
 			
-			if mousePress:		
-				for i in range (0, self.gridsize + 1):
-					for j in range (0, self.gridsize + 1):
-						if self.boardArr[(self.gridsize + 1) * i + j].collidepoint(mousex - self.boardStartX, mousey - self.boardStartY):
-							if not(self.placedPieces[(self.gridsize + 1) * i + j][0]) and self.__calcValidity(i, j): 			#if the piece is not placed yet
-								print "adding piece at", i, j, "  ", self.currentplayer.name
-								self.placedPieces[i * (self.gridsize + 1) + j] = [True, self.currentplayer]
-								self.__switchPlayer()
-								self.validstr = "                   " #Spaces need to exist to create a rect that covers the previous one
-							else:
-								self.validstr = "Invalid move"
+			if mousePress:
+				if passButton.labelRect.collidepoint(mousex, mousey): 
+					keepPlaying = self.__pass()	
+				if resignButton.labelRect.collidepoint(mousex, mousey):
+					keepPlaying = self.__resign()
+				else:	
+					for i in range (0, self.gridsize + 1):
+						for j in range (0, self.gridsize + 1):
+							if self.boardArr[(self.gridsize + 1) * i + j].collidepoint(mousex - self.boardStartX, mousey - self.boardStartY):
+								if not(self.placedPieces[(self.gridsize + 1) * i + j][0]) and self.__calcValidity(i, j): 			#if the piece is not placed yet
+									print "adding piece at", i, j, "  ", self.currentplayer.name
+									self.placedPieces[i * (self.gridsize + 1) + j] = [True, self.currentplayer]
+									self.currentplayer.passed = False
+									self.__switchPlayer()
+									self.validstr = "                   " #Spaces need to exist to create a rect that covers the previous one
+								else:
+									self.validstr = "Invalid move"
+						
+							
 								
-			self.display.blit(pieceSurface, (self.boardStartX, self.boardStartY))
+			self.display.blit(pieceSurface, (self.boardStartX, self.boardStartY))	
 			
 			for i in range (0, self.gridsize):
 				for j in range(0, self.gridsize):
@@ -133,6 +148,8 @@ class Grid:				#Singleton Pattern
 				for j in range (0, self.gridsize + 1):
 					if self.placedPieces[i * (self.gridsize + 1) + j][0]:			
 						self.placedPieces[i * (self.gridsize + 1) + j][1].placePiece( int(self.boardStartX + (self.boxDimension / 2) + (i * self.boxDimension)), int(self.boardStartY + (self.boxDimension / 2) + (j * self.boxDimension)), self.boxDimension / 3 )
+			
+			return keepPlaying
 			
 		def __getGridSize(self):
 			return self.gridsize
@@ -156,6 +173,19 @@ class Grid:				#Singleton Pattern
 			if not(self.placedPieces[i * (self.gridsize + 1) + j + 1][0]) or self.placedPieces[i * (self.gridsize + 1) + j + 1][1] == self.currentplayer: return True
 			if not(self.placedPieces[(i + 1) * (self.gridsize + 1) + j][0]) or self.placedPieces[(i + 1) * (self.gridsize + 1) + j][1] == self.currentplayer: return True
 			return False
+			
+		def __pass(self):
+			self.currentplayer.passed = True
+			print self.currentplayer.name, "passed"
+			self.__switchPlayer()
+			if self.currentplayer.passed: #if both players have passed
+				return False
+			return True
+			
+		def __resign(self):
+			self.currentplayer.resigned = True
+			print self.currentplayer.name, "resigned"
+			return False
 
 
 	instance = None
@@ -167,7 +197,7 @@ class Grid:				#Singleton Pattern
 		Grid.instance.__drawGrid()
 	
 	def updateGrid(self, mousePress, mousex, mousey):
-		Grid.instance.__updateGrid(mousePress, mousex, mousey)
+		return Grid.instance.__updateGrid(mousePress, mousex, mousey)
 	
 	def getSize(self):
 		return Grid.instance.gridsize

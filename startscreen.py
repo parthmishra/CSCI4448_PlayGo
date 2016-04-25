@@ -61,14 +61,14 @@ def showStartScreen(DISPLAY, FPSCLOCK):
 	
 	
 	#Adding options buttons
-	gridSize90Button = draw.Label(c.STARTSCREENFONT, 25, False, "  9 x 9  ", c.BLACK, 0.5,0.29, -150)
-	gridSize90Button.drawRect(DISPLAY,c.WHITE,20,5)
+	gridSize9Button = draw.Label(c.STARTSCREENFONT, 25, False, "  9 x 9  ", c.BLACK, 0.5,0.29, -150)
+	gridSize9Button.drawRect(DISPLAY,c.WHITE,20,5)
 
-	gridSize110Button = draw.Label(c.STARTSCREENFONT, 25, False, " 11 x 11 ", c.BLACK, 0.5,0.29)
-	gridSize110Button.drawRect(DISPLAY,c.WHITE,20,5)
+	gridSize11Button = draw.Label(c.STARTSCREENFONT, 25, False, " 11 x 11 ", c.BLACK, 0.5,0.29)
+	gridSize11Button.drawRect(DISPLAY,c.WHITE,20,5)
 
-	gridSize190Button = draw.Label(c.STARTSCREENFONT, 25, False, " 19 x 19 ", c.BLACK, 0.5,0.29, 150)
-	gridSize190Button.drawRect(DISPLAY,c.WHITE,20,5)
+	gridSize19Button = draw.Label(c.STARTSCREENFONT, 25, False, " 19 x 19 ", c.BLACK, 0.5,0.29, 150)
+	gridSize19Button.drawRect(DISPLAY,c.WHITE,20,5)
 
 	mode2PlayerButton = draw.Label(c.STARTSCREENFONT, 25, False, " 2 Player ", c.BLACK, 0.5,0.49,-75)
 	mode2PlayerButton.drawRect(DISPLAY,c.WHITE,20,5)
@@ -108,20 +108,20 @@ def showStartScreen(DISPLAY, FPSCLOCK):
 		
 		
 		if mousePress:
-			if gridSize90Button.labelRect.collidepoint(mousex, mousey):
-				gridSize90Button.drawRect(DISPLAY, c.LTGRAY)
-				gridSize110Button.drawRect(DISPLAY, c.WHITE)
-				gridSize190Button.drawRect(DISPLAY, c.WHITE)
+			if gridSize9Button.labelRect.collidepoint(mousex, mousey):
+				gridSize9Button.drawRect(DISPLAY, c.LTGRAY)
+				gridSize11Button.drawRect(DISPLAY, c.WHITE)
+				gridSize19Button.drawRect(DISPLAY, c.WHITE)
 				grid = 9
-			if gridSize110Button.labelRect.collidepoint(mousex, mousey):
-				gridSize90Button.drawRect(DISPLAY, c.WHITE)
-				gridSize110Button.drawRect(DISPLAY, c.LTGRAY)
-				gridSize190Button.drawRect(DISPLAY, c.WHITE)
+			if gridSize11Button.labelRect.collidepoint(mousex, mousey):
+				gridSize9Button.drawRect(DISPLAY, c.WHITE)
+				gridSize11Button.drawRect(DISPLAY, c.LTGRAY)
+				gridSize19Button.drawRect(DISPLAY, c.WHITE)
 				grid = 11
-			if gridSize190Button.labelRect.collidepoint(mousex, mousey):
-				gridSize90Button.drawRect(DISPLAY, c.WHITE)
-				gridSize110Button.drawRect(DISPLAY, c.WHITE)
-				gridSize190Button.drawRect(DISPLAY, c.LTGRAY)
+			if gridSize19Button.labelRect.collidepoint(mousex, mousey):
+				gridSize9Button.drawRect(DISPLAY, c.WHITE)
+				gridSize11Button.drawRect(DISPLAY, c.WHITE)
+				gridSize19Button.drawRect(DISPLAY, c.LTGRAY)
 				grid = 19
                                 
                         if player1Button.labelRect.collidepoint(mousex, mousey):
@@ -131,12 +131,12 @@ def showStartScreen(DISPLAY, FPSCLOCK):
                                 namebox1 = Namebox(0.5,0.69,-75, 25)
                                 namebox2 = Namebox(0.5,0.69, 75, 25)
 
-			elif startButton.labelRect.collidepoint(mousex, mousey):
+			elif startButton.labelRect.collidepoint(mousex, mousey) and grid:
 				cont = False
 			
-		DISPLAY.blit(gridSize90Button.labelText, gridSize90Button.labelRect)
-		DISPLAY.blit(gridSize110Button.labelText, gridSize110Button.labelRect)
-		DISPLAY.blit(gridSize190Button.labelText, gridSize190Button.labelRect)
+		DISPLAY.blit(gridSize9Button.labelText, gridSize9Button.labelRect)
+		DISPLAY.blit(gridSize11Button.labelText, gridSize11Button.labelRect)
+		DISPLAY.blit(gridSize19Button.labelText, gridSize19Button.labelRect)
 		
 		pygame.display.update()
 		
