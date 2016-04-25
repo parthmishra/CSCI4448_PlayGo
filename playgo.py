@@ -3,6 +3,7 @@ import config as c
 import draw
 import gamescreen
 import startscreen as startscreen
+import endscreen as endscreen
 from pygame.locals import *
 
 def main():
@@ -17,6 +18,10 @@ def main():
 	player1 = Player(c.BLACK, player1name)
 	player2 = Player(c.WHITE, player2name)
 	gamescreen.displayGame(gridsize, player1, player2, DISPLAY, FPSCLOCK)
+
+	
+        if player1.resigned or player2.resigned:	
+                endscreen.displayGame(gridsize, player1, player2, DISPLAY, FPSCLOCK)
 	
 
 class scoreBoard:
