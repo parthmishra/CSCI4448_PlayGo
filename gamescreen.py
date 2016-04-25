@@ -144,14 +144,18 @@ class Grid:				#Singleton Pattern
 				self.currentplayer = self.player1
 		
 		def __calcValidity(self, i, j): #returns True for a valid move, False for an invalid move
+			captured = self.__calcCapture(i, j)
+			return self.__calcLiberties(i, j)			
+		
+		def __calcCapture(self, i, j):
+			return False
+			
+		def __calcLiberties(self, i, j): #returns True for free or sympathetic liberties, False for filled liberties
 			if not(self.placedPieces[(i - 1) * (self.gridsize + 1) + j][0]) or self.placedPieces[(i - 1) * (self.gridsize + 1) + j][1] == self.currentplayer: return True
 			if not(self.placedPieces[i * (self.gridsize + 1) + j - 1][0]) or self.placedPieces[i * (self.gridsize + 1) + j - 1][1] == self.currentplayer: return True
 			if not(self.placedPieces[i * (self.gridsize + 1) + j + 1][0]) or self.placedPieces[i * (self.gridsize + 1) + j + 1][1] == self.currentplayer: return True
 			if not(self.placedPieces[(i + 1) * (self.gridsize + 1) + j][0]) or self.placedPieces[(i + 1) * (self.gridsize + 1) + j][1] == self.currentplayer: return True
 			return False
-		
-		def __calcCapture(self, i, j):
-			
 			
 			
 	instance = None
