@@ -8,6 +8,7 @@ DRKGRAY		= (100, 100, 100)
 LTGRAY		= (175, 175, 175)
 TAN			= (224,	176,  54)
 GREEN		= (  0, 255,   0)
+RED			= (255,   0,   0)
 
 #Game Options
 FPS = 10

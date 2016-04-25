@@ -37,6 +37,7 @@ class Player:
 	def __init__(self, color, name):
 		self.color = color
 		self.name = name
+		self.captures = 0
 
 	def placePiece(self, xcoord, ycoord, pieceWidth):
 		pygame.draw.circle(DISPLAY, self.color, (xcoord, ycoord), pieceWidth)

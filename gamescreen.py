@@ -26,7 +26,10 @@ def displayGame(gridsize, player1, player2, DISPLAY, FPSCLOCK):
 					pygame.quit()
 					sys.exit()
 		
-		gameboard.updateGrid(mousePress, mousex, mousey)		
+		gameboard.updateGrid(mousePress, mousex, mousey)
+		validLabel = draw.Label(c.STARTSCREENFONT, 20, False, gameboard.getValidStr(), c.RED, 0, 1, 75, -40)
+		validLabel.drawRect(DISPLAY, c.WHITE, 0, 0, 0)
+		DISPLAY.blit(validLabel.labelText, validLabel.labelRect)		
 				
 		pygame.display.update()
 		FPSCLOCK.tick(c.FPS)
@@ -48,6 +51,7 @@ class Grid:				#Singleton Pattern
 			self.display = DISPLAY
 			self.boardArr = []
 			self.placedPieces = []
+			self.validstr = ""
 			
 		def __drawGrid(self):
 			for i in range (0, self.gridsize):
@@ -66,9 +70,9 @@ class Grid:				#Singleton Pattern
 			pygame.draw.rect(self.display, c.WHITE, (0, 0, c.WINWIDTH, self.boxStartY))
 			pygame.draw.rect(self.display, c.WHITE, (0, self.boardStartY + self.boardDimension - (self.boxDimension / 2), c.WINWIDTH, self.boxStartY))
 			
-			
 			p1Label = draw.Label(c.STARTSCREENFONT, 30, False, self.player1.name, c.BLACK, 0, 0, 75, 20)
 			p2Label = draw.Label(c.STARTSCREENFONT, 30, False, self.player2.name, c.BLACK, 1, 0, -75, 20)
+			
 			
 			passButton = draw.Label(c.STARTSCREENFONT, 30, False, " PASS ", c.BLACK, 1, 1, -75, -40)
 			passButton.drawRect(self.display, c.BLACK, 0, 0, 1)
@@ -115,6 +119,9 @@ class Grid:				#Singleton Pattern
 								print "adding piece at", i, j, "  ", self.currentplayer.name
 								self.placedPieces[i * (self.gridsize + 1) + j] = [True, self.currentplayer]
 								self.__switchPlayer()
+								self.validstr = "                   " #Spaces need to exist to create a rect that covers the previous one
+							else:
+								self.validstr = "Invalid move"
 								
 			self.display.blit(pieceSurface, (self.boardStartX, self.boardStartY))
 			
@@ -142,6 +149,9 @@ class Grid:				#Singleton Pattern
 			if not(self.placedPieces[i * (self.gridsize + 1) + j + 1][0]) or self.placedPieces[i * (self.gridsize + 1) + j + 1][1] == self.currentplayer: return True
 			if not(self.placedPieces[(i + 1) * (self.gridsize + 1) + j][0]) or self.placedPieces[(i + 1) * (self.gridsize + 1) + j][1] == self.currentplayer: return True
 			return False
+		
+		def __calcCapture(self, i, j):
+			
 			
 			
 	instance = None
@@ -160,6 +170,9 @@ class Grid:				#Singleton Pattern
 	
 	def getDimension(self):
 		return Grid.instance.boardDimension
+	
+	def getValidStr(self):
+		return Grid.instance.validstr
 	
 	
 	
