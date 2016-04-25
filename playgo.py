@@ -12,10 +12,8 @@ def main():
 	DISPLAY = pygame.display.set_mode((c.WINWIDTH, c.WINHEIGHT))
 	FPSCLOCK = pygame.time.Clock()
 	
-	gridsize = startscreen.showStartScreen(DISPLAY, pygame.time.Clock()) 		#Make this a tuple to collect game mode and names
+	(gridsize, player1name, player2name) = startscreen.showStartScreen(DISPLAY, pygame.time.Clock()) 		#Make this a tuple to collect game mode and names
 	
-	player1name = "Player 1"
-	player2name = "Player 2"
 	player1 = Player(c.BLACK, player1name)
 	player2 = Player(c.WHITE, player2name)
 	gamescreen.displayGame(gridsize, player1, player2, DISPLAY, FPSCLOCK)

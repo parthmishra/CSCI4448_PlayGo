@@ -35,13 +35,15 @@ def showStartScreen(DISPLAY, FPSCLOCK):
                         Namebox.namebox_count += 1
                         
                         input_name = identify_key()
-                        print input_name
                         name_box = draw.Label(c.STARTSCREENFONT, 18, False, input_name, c.WHITE, self.screenx, self.screeny, self.scalex, self.scaley)
                         name_box.drawRect(DISPLAY, c.BLACK, 20, 5)
                         DISPLAY.blit(name_box.labelText, name_box.labelRect)
+                        self.name = input_name
                         
 	mousex = 0
 	mousey = 0
+	player1name = "Player 1"
+	player2name = "Player 2"
 
 	
 	#Adding text labels to the screen
@@ -76,10 +78,10 @@ def showStartScreen(DISPLAY, FPSCLOCK):
 	modeAIButton = draw.Label(c.STARTSCREENFONT, 25, False, "  vs. AI  ", c.BLACK, 0.5,0.49,75)
 	modeAIButton.drawRect(DISPLAY,c.DRKGRAY,20,5)
 	
-	player1Button = draw.Label(c.STARTSCREENFONT, 25, False, " Player 1 ", c.BLACK, 0.5,0.69,-75)
+	player1Button = draw.Label(c.STARTSCREENFONT, 25, False, player1name, c.BLACK, 0.5,0.69,-75)
 	player1Button.drawRect(DISPLAY, c.WHITE, 20, 5)
 
-	player2Button = draw.Label(c.STARTSCREENFONT, 25, False, " Player 2 ", c.BLACK, 0.5,0.69,75)
+	player2Button = draw.Label(c.STARTSCREENFONT, 25, False, player2name, c.BLACK, 0.5,0.69,75)
 	player2Button.drawRect(DISPLAY, c.WHITE, 20, 5)
 
 	startButton = draw.Label(c.STARTSCREENFONT, 25, False, " START ", c.BLACK, 0.5,0.9)
@@ -129,10 +131,13 @@ def showStartScreen(DISPLAY, FPSCLOCK):
 							
 			if player1Button.labelRect.collidepoint(mousex, mousey):
 				namebox1 = Namebox(0.5,0.69,-75, 25)
+				player1name = namebox1.name
                                 
 			if player2Button.labelRect.collidepoint(mousex, mousey):
 				namebox1 = Namebox(0.5,0.69,-75, 25)
+				player1name = namebox1.name
 				namebox2 = Namebox(0.5,0.69, 75, 25)
+				player2name = namebox2.name
 
 			elif startButton.labelRect.collidepoint(mousex, mousey):
 				if grid:
@@ -151,6 +156,7 @@ def showStartScreen(DISPLAY, FPSCLOCK):
 		
 		FPSCLOCK.tick(c.FPS)
 	
+	print player1name, player2name
 	DISPLAY.fill(c.TAN)
-	return grid
+	return grid, player1name, player2name
 	
