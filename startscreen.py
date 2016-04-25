@@ -76,8 +76,8 @@ def showStartScreen(DISPLAY, FPSCLOCK):
 	modeAIButton = draw.Label(c.STARTSCREENFONT, 25, False, "  vs. AI  ", c.BLACK, 0.5,0.49,75)
 	modeAIButton.drawRect(DISPLAY,c.DRKGRAY,20,5)
 	
-	player1Button = draw.Label(c.STARTSCREENFONT, 25, False, " Player 1 ", c.BLACK, 0.5,0.69,-75)
-	player1Button.drawRect(DISPLAY, c.WHITE, 20, 5)
+	player1Button = draw.Label(c.STARTSCREENFONT, 25, False, " Player 1 ", c.WHITE, 0.5,0.69,-75)
+	player1Button.drawRect(DISPLAY, c.BLACK, 20, 5)
 
 	player2Button = draw.Label(c.STARTSCREENFONT, 25, False, " Player 2 ", c.BLACK, 0.5,0.69,75)
 	player2Button.drawRect(DISPLAY, c.WHITE, 20, 5)
