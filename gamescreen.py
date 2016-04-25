@@ -156,8 +156,8 @@ class Grid:				#Singleton Pattern
 			if not(self.placedPieces[i * (self.gridsize + 1) + j + 1][0]) or self.placedPieces[i * (self.gridsize + 1) + j + 1][1] == self.currentplayer: return True
 			if not(self.placedPieces[(i + 1) * (self.gridsize + 1) + j][0]) or self.placedPieces[(i + 1) * (self.gridsize + 1) + j][1] == self.currentplayer: return True
 			return False
-			
-			
+
+
 	instance = None
 	def __init__(self, DISPLAY, gridsize, boxStartY, player1, player2):
 		if not Grid.instance:
@@ -177,19 +177,4 @@ class Grid:				#Singleton Pattern
 	
 	def getValidStr(self):
 		return Grid.instance.validstr
-	
-	
-	
-	
-	
-	
-#	def getGrid():
-#		if (theGrid == None):
-#			theGrid = Grid(
-#
-#	def calcValidity():
-#		pass
-#
-#	def calcCapture():
-#		pass
 

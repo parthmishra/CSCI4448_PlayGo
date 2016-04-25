@@ -1,12 +1,48 @@
 import pygame, sys, playgo
 import config as c
 import draw
-from pygame.locals import *
-
+from pygame.locals import *                        
+                        
+# Helper function
+def identify_key():
+        text_buffer = ""
+        while True: 
+                for event in pygame.event.get():
+                        if event.type == KEYUP:
+                                if event.key == K_ESCAPE:
+                                        pygame.quit()
+                                        sys.exit()
+                                else:
+                                        if event.key == K_RETURN:
+                                                return text_buffer
+                                        str_key = str(chr(event.key))
+                                        text_buffer+=str_key
+                                        
 
 def showStartScreen(DISPLAY, FPSCLOCK):
+
+        # namebox class
+        class Namebox:
+                
+                # attributes
+                namebox_count = 0
+                def __init__(self, screenx, screeny, scalex, scaley):
+                        self.screenx = screenx
+                        self.screeny = screeny
+                        self.scalex = scalex
+                        self.scaley = scaley
+                        
+                        Namebox.namebox_count += 1
+                        
+                        input_name = identify_key()
+                        print input_name
+                        name_box = draw.Label(c.STARTSCREENFONT, 18, False, input_name, c.WHITE, self.screenx, self.screeny, self.scalex, self.scaley)
+                        name_box.drawRect(DISPLAY, c.BLACK, 20, 5)
+                        DISPLAY.blit(name_box.labelText, name_box.labelRect)
+                        
 	mousex = 0
 	mousey = 0
+
 	
 	#Adding text labels to the screen
 	titleLabel = draw.Label(c.STARTSCREENFONT, 40, True, "Start Game", c.BLACK, 0.5, 0.1)
@@ -55,7 +91,7 @@ def showStartScreen(DISPLAY, FPSCLOCK):
 	DISPLAY.blit(player2Button.labelText, player2Button.labelRect)
 	DISPLAY.blit(startButton.labelText, startButton.labelRect)
 	
-	cont = True
+        cont = True
 	grid = 0
 	
 	while cont:
@@ -87,6 +123,14 @@ def showStartScreen(DISPLAY, FPSCLOCK):
 				gridSize110Button.drawRect(DISPLAY, c.WHITE)
 				gridSize190Button.drawRect(DISPLAY, c.LTGRAY)
 				grid = 19
+                                
+                        if player1Button.labelRect.collidepoint(mousex, mousey):
+                                namebox1 = Namebox(0.5,0.69,-75, 25)
+                                
+                        if player2Button.labelRect.collidepoint(mousex, mousey):
+                                namebox1 = Namebox(0.5,0.69,-75, 25)
+                                namebox2 = Namebox(0.5,0.69, 75, 25)
+
 			elif startButton.labelRect.collidepoint(mousex, mousey):
 				cont = False
 			
