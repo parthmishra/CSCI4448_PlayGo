@@ -45,11 +45,6 @@ class Player:
 		pygame.draw.circle(DISPLAY, self.color, (xcoord, ycoord), pieceWidth)
 		pygame.draw.circle(DISPLAY, c.BLACK if self.color == c.WHITE else c.WHITE, (xcoord, ycoord), pieceWidth + 1, 1)
 
-	def resign():
-		pass
-
-	def passMove(): # changed 'pass' to 'passMove' for clarity
-		pass
 		
 
 if __name__ == "__main__":

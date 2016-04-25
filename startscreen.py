@@ -84,6 +84,8 @@ def showStartScreen(DISPLAY, FPSCLOCK):
 
 	startButton = draw.Label(c.STARTSCREENFONT, 25, False, " START ", c.BLACK, 0.5,0.9)
 	startButton.drawRect(DISPLAY, c.GREEN, 20, 5)
+	
+	
 
 	DISPLAY.blit(mode2PlayerButton.labelText, mode2PlayerButton.labelRect)
 	DISPLAY.blit(modeAIButton.labelText, modeAIButton.labelRect)
@@ -91,7 +93,8 @@ def showStartScreen(DISPLAY, FPSCLOCK):
 	DISPLAY.blit(player2Button.labelText, player2Button.labelRect)
 	DISPLAY.blit(startButton.labelText, startButton.labelRect)
 	
-        cont = True
+	
+	cont = True
 	grid = 0
 	
 	while cont:
@@ -123,20 +126,26 @@ def showStartScreen(DISPLAY, FPSCLOCK):
 				gridSize11Button.drawRect(DISPLAY, c.WHITE)
 				gridSize19Button.drawRect(DISPLAY, c.LTGRAY)
 				grid = 19
+							
+			if player1Button.labelRect.collidepoint(mousex, mousey):
+				namebox1 = Namebox(0.5,0.69,-75, 25)
                                 
-                        if player1Button.labelRect.collidepoint(mousex, mousey):
-                                namebox1 = Namebox(0.5,0.69,-75, 25)
-                                
-                        if player2Button.labelRect.collidepoint(mousex, mousey):
-                                namebox1 = Namebox(0.5,0.69,-75, 25)
-                                namebox2 = Namebox(0.5,0.69, 75, 25)
+			if player2Button.labelRect.collidepoint(mousex, mousey):
+				namebox1 = Namebox(0.5,0.69,-75, 25)
+				namebox2 = Namebox(0.5,0.69, 75, 25)
 
-			elif startButton.labelRect.collidepoint(mousex, mousey) and grid:
-				cont = False
-			
+			elif startButton.labelRect.collidepoint(mousex, mousey):
+				if grid:
+					cont = False
+				else:
+					errorMessageText = "Choose grid size"
+					errorMessage = draw.Label(c.STARTSCREENFONT, 20, False, errorMessageText, c.RED, 0.5, 0.85)
+					DISPLAY.blit(errorMessage.labelText, errorMessage.labelRect)
+		
 		DISPLAY.blit(gridSize9Button.labelText, gridSize9Button.labelRect)
 		DISPLAY.blit(gridSize11Button.labelText, gridSize11Button.labelRect)
 		DISPLAY.blit(gridSize19Button.labelText, gridSize19Button.labelRect)
+		
 		
 		pygame.display.update()
 		
