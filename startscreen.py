@@ -21,7 +21,7 @@ def identify_key():
                                         text_buffer+=str_key
                                         
 
-def showStartScreen(DISPLAY, FPSCLOCK):
+def showStartScreen(DISPLAY, FPSCLOCK, player1name, player2name):
 
         # namebox class
         class Namebox:
@@ -44,8 +44,6 @@ def showStartScreen(DISPLAY, FPSCLOCK):
                         
 	mousex = 0
 	mousey = 0
-	player1name = "Player 1"
-	player2name = "Player 2"
 
 	
 	#Adding text labels to the screen

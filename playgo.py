@@ -12,12 +12,13 @@ def main():
 	pygame.display.set_caption("PlayGo!")
 	DISPLAY = pygame.display.set_mode((c.WINWIDTH, c.WINHEIGHT))
 	FPSCLOCK = pygame.time.Clock()
+	player1name = "Player 1"
+	player2name = "Player 2"
 	
 	keepPlaying = True
 	while keepPlaying:
 		print "\nNew game!"
-		(gridsize, player1name, player2name) = startscreen.showStartScreen(DISPLAY, pygame.time.Clock()) 		#Make this a tuple to collect game mode and names
-		
+		(gridsize, player1name, player2name) = startscreen.showStartScreen(DISPLAY, pygame.time.Clock(), player1name, player2name) 		#Make this a tuple to collect game mode and names
 		player1 = Player(c.BLACK, " " + player1name + " ")
 		player2 = Player(c.WHITE, " " + player2name + " ")
 		print player1name, " vs. ", player2name, "on", gridsize, "x", gridsize, "\n"
