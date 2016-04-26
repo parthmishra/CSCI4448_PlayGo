@@ -13,14 +13,17 @@ def main():
 	DISPLAY = pygame.display.set_mode((c.WINWIDTH, c.WINHEIGHT))
 	FPSCLOCK = pygame.time.Clock()
 	
-	(gridsize, player1name, player2name) = startscreen.showStartScreen(DISPLAY, pygame.time.Clock()) 		#Make this a tuple to collect game mode and names
-	
-	player1 = Player(c.BLACK, " " + player1name + " ")
-	player2 = Player(c.WHITE, " " + player2name + " ")
-	gamescreen.displayGame(gridsize, player1, player2, DISPLAY, FPSCLOCK)
+	keepPlaying = True
+	while keepPlaying:
+		print "\nNew game!"
+		(gridsize, player1name, player2name) = startscreen.showStartScreen(DISPLAY, pygame.time.Clock()) 		#Make this a tuple to collect game mode and names
+		
+		player1 = Player(c.BLACK, " " + player1name + " ")
+		player2 = Player(c.WHITE, " " + player2name + " ")
+		print player1name, " vs. ", player2name, "on", gridsize, "x", gridsize, "\n"
+		gamescreen.displayGame(gridsize, player1, player2, DISPLAY, FPSCLOCK)
 
-	if player1.resigned or player2.resigned:	
-		endscreen.displayGame(gridsize, player1, player2, DISPLAY, FPSCLOCK)
+		keepPlaying = endscreen.displayGame(gridsize, player1, player2, DISPLAY, FPSCLOCK)
 
 class Player:
 	

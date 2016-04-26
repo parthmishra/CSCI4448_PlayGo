@@ -33,6 +33,8 @@ def displayGame(gridsize, player1, player2, DISPLAY, FPSCLOCK):
 				
 		pygame.display.update()
 		FPSCLOCK.tick(c.FPS)
+	
+	gameboard.clear()
 		
 		
 class Grid:				#Singleton Pattern
@@ -125,7 +127,7 @@ class Grid:				#Singleton Pattern
 						for j in range (0, self.gridsize + 1):
 							if self.boardArr[(self.gridsize + 1) * i + j].collidepoint(mousex - self.boardStartX, mousey - self.boardStartY):
 								if not(self.placedPieces[(self.gridsize + 1) * i + j][0]) and self.__calcValidity(i, j): 			#if the piece is not placed yet
-									print "adding piece at", i, j, "  ", self.currentplayer.name
+									print self.currentplayer.name, "added piece at", i, j
 									self.placedPieces[i * (self.gridsize + 1) + j] = [True, self.currentplayer]
 									self.__switchPlayer()
 									self.validstr = "                   " #Spaces need to exist to create a rect that covers the previous one
@@ -181,60 +183,50 @@ class Grid:				#Singleton Pattern
 			if not((i - 1) < 0):
 				if self.placedPieces[(i - 1) * (self.gridsize + 1) + j][0] and not(self.placedPieces[(i - 1) * (self.gridsize + 1) + j][1] == self.currentplayer):
 					if not(self.__calcLiberties((i - 1), j)):
+						print "	- captured piece at", (i - 1), j
 						self.placedPieces[(i - 1) * (self.gridsize + 1) + j] = [False, self.currentplayer]
 			if not((j - 1) < 0):
 				if self.placedPieces[i * (self.gridsize + 1) + (j - 1)][0] and not(self.placedPieces[i * (self.gridsize + 1) + (j - 1)][1] == self.currentplayer):
 					if not(self.__calcLiberties(i, (j - 1))):
+						print "	- captured piece at", i, (j - 1)
 						self.placedPieces[i * (self.gridsize + 1) + (j - 1)] = [False, self.currentplayer]
 			if not((j + 1) > self.gridsize):
 				if self.placedPieces[i * (self.gridsize + 1) + (j + 1)][0] and not(self.placedPieces[i * (self.gridsize + 1) + (j + 1)][1] == self.currentplayer):
 					if not(self.__calcLiberties(i, (j + 1))):
+						print "	- captured piece at", i, (j + 1)
 						self.placedPieces[i * (self.gridsize + 1) + (j + 1)] = [False, self.currentplayer]
 			if not((i + 1) > self.gridsize):
 				if self.placedPieces[(i + 1) * (self.gridsize + 1) + j][0] and not(self.placedPieces[(i + 1) * (self.gridsize + 1) + j][1] == self.currentplayer):
 					if not(self.__calcLiberties((i + 1), j)):
+						print "	- captured piece at", (i + 1), j
 						self.placedPieces[(i + 1) * (self.gridsize + 1) + j] = [False, self.currentplayer]
 			
 		def __calcLiberties(self, i, j): #returns True for free or sympathetic liberties, False for filled liberties
-			print "Check liberties:", i, j
 			numlibs = 0
 			if not((i - 1) < 0):
-				print "Checking", i - 1, j
 				if self.placedPieces[(i - 1) * (self.gridsize + 1) + j][0]:
 					if self.placedPieces[(i - 1) * (self.gridsize + 1) + j][1] == self.placedPieces[i * (self.gridsize + 1) + j][1]:
-						print "lib at: ", i - 1, j
 						numlibs += 1
 				else:
-					print "lib at: ", i - 1, j
 					numlibs += 1
 			if not((j - 1) < 0):
-				print "Checking", i, j - 1
 				if self.placedPieces[i * (self.gridsize + 1) + j - 1][0]:
 					if self.placedPieces[i * (self.gridsize + 1) + j - 1][1] == self.placedPieces[i * (self.gridsize + 1) + j][1]:
-						print "lib at: ", i, j - 1
 						numlibs += 1
 				else:
-					print "lib at: ", i, j - 1
 					numlibs += 1
 			if not((j + 1) > self.gridsize):
-				print "Checking", i, j + 1
 				if self.placedPieces[i * (self.gridsize + 1) + j + 1][0]:
 					if self.placedPieces[i * (self.gridsize + 1) + j + 1][1] == self.placedPieces[i * (self.gridsize + 1) + j][1]:
-						print "lib at: ", i, j + 1
 						numlibs += 1
 				else:
-					print "lib at: ", i, j + 1
 					numlibs += 1
 			if not((i + 1) > self.gridsize):
-				print "Checking", i + 1, j
 				if self.placedPieces[(i + 1) * (self.gridsize + 1) + j][0]:
 					if self.placedPieces[(i + 1) * (self.gridsize + 1) + j][1] == self.placedPieces[i * (self.gridsize + 1) + j][1]:
-						print "lib at: ", i + 1, j
 						numlibs += 1
 				else:
-					print "lib at: ", i + 1, j
 					numlibs += 1
-			print i, j, ":", numlibs
 			if numlibs:
 				return True
 			else:
@@ -273,4 +265,8 @@ class Grid:				#Singleton Pattern
 	
 	def getValidStr(self):
 		return Grid.instance.validstr
+		
+	def clear(self):
+		for i in Grid.instance.placedPieces:
+			i[0] = False
 

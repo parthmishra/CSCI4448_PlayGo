@@ -153,7 +153,5 @@ def showStartScreen(DISPLAY, FPSCLOCK):
 		
 		FPSCLOCK.tick(c.FPS)
 	
-	print player1name, player2name
-	DISPLAY.fill(c.TAN)
 	return grid, player1name, player2name
 	

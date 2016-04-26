@@ -6,7 +6,7 @@ from pygame.locals import *
 def displayGame(gridsize, player1, player2, DISPLAY, FPSCLOCK):
 	score_file = open("scores.txt", 'r+')
 	words = score_file.read()
-	DISPLAY.fill(c.BLACK)
+	DISPLAY.fill(c.TAN)
 
 	if player1.resigned:
 		winner = player2.name
@@ -14,10 +14,25 @@ def displayGame(gridsize, player1, player2, DISPLAY, FPSCLOCK):
 		winner = player1.name
 
 	
-	WinnerLabel = draw.Label(c.STARTSCREENFONT, 45, False,  winner + " has won", c.GREEN, 0.5, 0.6, 0, -150)
-	DISPLAY.blit(WinnerLabel.labelText, WinnerLabel.labelRect)
+	gameOverLabel = draw.Label(c.STARTSCREENFONT, 45, False, " Game Over ", c.BLACK, 0.5, 0.3)
+	winnerLabel = draw.Label(c.STARTSCREENFONT, 45, False,  winner + "wins!", c.BLACK, 0.5, .5, 0,)
 	
-	while True:
+	newGameLabel = draw.Label(c.STARTSCREENFONT, 30, False, " New Game ", c.BLACK, 0.5, .8, -150, 0)
+	newGameLabel.drawRect(DISPLAY, c.WHITE, 100, 200, 0)
+	newGameLabel.drawRect(DISPLAY, c.BLACK, 101, 201, 1)
+	
+	quitLabel = draw.Label(c.STARTSCREENFONT, 30, False, "     Quit     ", c.BLACK, 0.5, .8, 150, 0)
+	quitLabel.drawRect(DISPLAY, c.WHITE, 100, 200, 0)
+	quitLabel.drawRect(DISPLAY, c.BLACK, 101, 201, 1)
+	
+	DISPLAY.blit(gameOverLabel.labelText, gameOverLabel.labelRect)
+	DISPLAY.blit(winnerLabel.labelText, winnerLabel.labelRect)
+	DISPLAY.blit(newGameLabel.labelText, newGameLabel.labelRect)
+	DISPLAY.blit(quitLabel.labelText, quitLabel.labelRect)
+	
+	newGame = False
+	cont = True
+	while cont:
 		mousePress = False
 		for event in pygame.event.get():
 			if event.type == MOUSEBUTTONUP:
@@ -30,4 +45,15 @@ def displayGame(gridsize, player1, player2, DISPLAY, FPSCLOCK):
 				if event.key == K_ESCAPE:
 					pygame.quit()
 					sys.exit()
+					
+		if mousePress:
+			if newGameLabel.labelRect.collidepoint(mousex, mousey):
+				newGame = True
+				cont = False
+			elif quitLabel.labelRect.collidepoint(mousex, mousey): 
+				newGame = False
+				cont = False
+		
 		pygame.display.update()
+
+	return newGame
