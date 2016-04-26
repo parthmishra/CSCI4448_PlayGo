@@ -13,3 +13,7 @@ This game makes use of the pygame module. Pygame requires 32 bit python to run. 
 python playgo.py
 
 Note: Configurations for the game can be edited within config.py
+
+
+# Video Link:
+https://youtu.be/-QsdOXUrP8M
