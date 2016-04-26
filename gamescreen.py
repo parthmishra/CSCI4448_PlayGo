@@ -66,13 +66,10 @@ class Grid:				#Singleton Pattern
 				for j in range (0, self.gridsize + 1):
 					self.boardArr.append( pygame.draw.circle(boardSurface, c.LTGRAY, ((self.boxDimension / 2) + (i * self.boxDimension), (self.boxDimension / 2) + (j * self.boxDimension)), self.boxDimension / 3) )
 			
-			
-			#UI Overlay
-			#pygame.draw.rect(self.display, c.WHITE, (0, 0, c.WINWIDTH, self.boxStartY))
-			#pygame.draw.rect(self.display, c.WHITE, (0, self.boardStartY + self.boardDimension - (self.boxDimension / 2), c.WINWIDTH, self.boxStartY))
-			
-			p1Label = draw.Label(c.STARTSCREENFONT, 30, False, self.player1.name, c.BLACK, 0, 0, 75, 20)
+			p1Label = draw.Label(c.STARTSCREENFONT, 30, False, self.player1.name, c.WHITE, 0, 0, 75, 20)
+			p1Label.drawRect(self.display, c.BLACK, 50, 50)
 			p2Label = draw.Label(c.STARTSCREENFONT, 30, False, self.player2.name, c.BLACK, 1, 0, -75, 20)
+			p2Label.drawRect(self.display, c.BLACK, 50, 50, 1)
 			
 			for i in range (0, self.gridsize + 1):
 				for j in range (0, self.gridsize + 1):
@@ -130,13 +127,10 @@ class Grid:				#Singleton Pattern
 								if not(self.placedPieces[(self.gridsize + 1) * i + j][0]) and self.__calcValidity(i, j): 			#if the piece is not placed yet
 									print "adding piece at", i, j, "  ", self.currentplayer.name
 									self.placedPieces[i * (self.gridsize + 1) + j] = [True, self.currentplayer]
-									self.currentplayer.passed = False
 									self.__switchPlayer()
 									self.validstr = "                   " #Spaces need to exist to create a rect that covers the previous one
 								else:
 									self.validstr = "Invalid move"
-						
-							
 								
 			self.display.blit(pieceSurface, (self.boardStartX, self.boardStartY))	
 			
@@ -149,6 +143,21 @@ class Grid:				#Singleton Pattern
 					if self.placedPieces[i * (self.gridsize + 1) + j][0]:			
 						self.placedPieces[i * (self.gridsize + 1) + j][1].placePiece( int(self.boardStartX + (self.boxDimension / 2) + (i * self.boxDimension)), int(self.boardStartY + (self.boxDimension / 2) + (j * self.boxDimension)), self.boxDimension / 3 )
 			
+			p1passed = draw.Label(c.STARTSCREENFONT, 15, False, "Passed", c.BLACK, 0, 0, 75, 50)
+			p2passed = draw.Label(c.STARTSCREENFONT, 15, False, "Passed", c.BLACK, 1, 0, -75, 50)
+			if self.player1.passed:
+				p1passed.drawRect(self.display, c.WHITE, 20, 20)
+				self.display.blit(p1passed.labelText, p1passed.labelRect)
+			else:
+				p1passed.drawRect(self.display, c.WHITE, 20, 20)
+			
+			if self.player2.passed:
+				p2passed.drawRect(self.display, c.WHITE, 20, 20)
+				self.display.blit(p2passed.labelText, p2passed.labelRect)
+			else:
+				p2passed.drawRect(self.display, c.WHITE, 20, 20)
+			
+			
 			return keepPlaying
 			
 		def __getGridSize(self):
@@ -157,8 +166,10 @@ class Grid:				#Singleton Pattern
 		def __switchPlayer(self):
 			if self.currentplayer == self.player1:
 				self.currentplayer = self.player2
+				self.currentplayer.passed = False
 			else:
 				self.currentplayer = self.player1
+				self.currentplayer.passed = False
 		
 		def __calcValidity(self, i, j): #returns True for a valid move, False for an invalid move
 			self.placedPieces[i * (self.gridsize + 1) + j] = [True, self.currentplayer]
@@ -182,7 +193,7 @@ class Grid:				#Singleton Pattern
 			if not((i + 1) > self.gridsize):
 				if self.placedPieces[(i + 1) * (self.gridsize + 1) + j][0] and not(self.placedPieces[(i + 1) * (self.gridsize + 1) + j][1] == self.currentplayer):
 					if not(self.__calcLiberties((i + 1), j)):
-						self.placedPieces[(i + 1) * (self.gridsize) + j] = [False, self.currentplayer]
+						self.placedPieces[(i + 1) * (self.gridsize + 1) + j] = [False, self.currentplayer]
 			
 		def __calcLiberties(self, i, j): #returns True for free or sympathetic liberties, False for filled liberties
 			print "Check liberties:", i, j
@@ -232,9 +243,9 @@ class Grid:				#Singleton Pattern
 		def __pass(self):
 			self.currentplayer.passed = True
 			print self.currentplayer.name, "passed"
-			self.__switchPlayer()
-			if self.currentplayer.passed: #if both players have passed
+			if self.player1.passed and self.player2.passed: #if both players have passed
 				return False
+			self.__switchPlayer()
 			return True
 			
 		def __resign(self):

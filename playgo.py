@@ -2,8 +2,8 @@ import pygame, sys
 import config as c
 import draw
 import gamescreen
-import startscreen as startscreen
-import endscreen as endscreen
+import startscreen
+import endscreen
 from pygame.locals import *
 
 def main():
@@ -15,25 +15,12 @@ def main():
 	
 	(gridsize, player1name, player2name) = startscreen.showStartScreen(DISPLAY, pygame.time.Clock()) 		#Make this a tuple to collect game mode and names
 	
-	player1 = Player(c.BLACK, player1name)
-	player2 = Player(c.WHITE, player2name)
+	player1 = Player(c.BLACK, " " + player1name + " ")
+	player2 = Player(c.WHITE, " " + player2name + " ")
 	gamescreen.displayGame(gridsize, player1, player2, DISPLAY, FPSCLOCK)
 
-	
-        if player1.resigned or player2.resigned:	
-                endscreen.displayGame(gridsize, player1, player2, DISPLAY, FPSCLOCK)
-	
-
-class scoreBoard:
-
-	def getScore():
-		pass
-	
-	def getGameHistory():
-		pass
-
-	def endGame():
-		pass
+	if player1.resigned or player2.resigned:	
+		endscreen.displayGame(gridsize, player1, player2, DISPLAY, FPSCLOCK)
 
 class Player:
 	
