@@ -15,6 +15,8 @@ def identify_key():
                                 else:
                                         if event.key == K_RETURN:
                                                 return text_buffer
+                                        elif (len(text_buffer) >= 10):
+                                                return text_buffer
                                         str_key = str(chr(event.key))
                                         text_buffer+=str_key
                                         
